@@ -66,11 +66,27 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
     private final Class<?> beanClass;
     private final boolean required;
 
+    /**
+     *
+     * dubbo 的相关配置项  dubbo.xsd里面
+     * @param beanClass 相关配置实体bean
+     * @param required
+     */
     public DubboBeanDefinitionParser(Class<?> beanClass, boolean required) {
         this.beanClass = beanClass;
         this.required = required;
     }
 
+
+    /**
+     * spring中的每一个bean 都有一个对应的beanDefination相对应
+     * 把xml中的每一个定义解析为beanDefinition对象
+     * @param element xml中具体节点元素  比如 refrence service <dubbo service></>
+     * @param parserContext xml解析上下文
+     * @param beanClass 要映射成的类
+     * @param required 是否必须存在
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private static BeanDefinition parse(Element element, ParserContext parserContext, Class<?> beanClass, boolean required) {
         RootBeanDefinition beanDefinition = new RootBeanDefinition();
@@ -80,6 +96,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
         if ((id == null || id.length() == 0) && required) {
             String generatedBeanName = element.getAttribute("name");
             if (generatedBeanName == null || generatedBeanName.length() == 0) {
+                // 如果是协议解析 默认为dubbo协议
                 if (ProtocolConfig.class.equals(beanClass)) {
                     generatedBeanName = "dubbo";
                 } else {
@@ -95,13 +112,16 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                 id = generatedBeanName + (counter++);
             }
         }
+        // 是否有相同的id bean存在 存在则抛出异常
         if (id != null && id.length() > 0) {
             if (parserContext.getRegistry().containsBeanDefinition(id)) {
                 throw new IllegalStateException("Duplicate spring bean id " + id);
             }
+            // 不存在则注册到容器内
             parserContext.getRegistry().registerBeanDefinition(id, beanDefinition);
             beanDefinition.getPropertyValues().addPropertyValue("id", id);
         }
+        // 对协议配置类的处理
         if (ProtocolConfig.class.equals(beanClass)) {
             for (String name : parserContext.getRegistry().getBeanDefinitionNames()) {
                 BeanDefinition definition = parserContext.getRegistry().getBeanDefinition(name);
@@ -109,6 +129,8 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
                 if (property != null) {
                     Object value = property.getValue();
                     if (value instanceof ProtocolConfig && id.equals(((ProtocolConfig) value).getName())) {
+//                        RuntimeBeanReference，在解析到依赖的Bean的时侯，解析器会依据依赖bean的name创建一个RuntimeBeanReference对像，
+// 将这个对像放入BeanDefinition的MutablePropertyValues中
                         definition.getPropertyValues().addPropertyValue("protocol", new RuntimeBeanReference(id));
                     }
                 }
@@ -324,6 +346,15 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
         }
     }
 
+
+    /**
+     *
+     *
+     * 解析参数数组
+     * @param nodeList
+     * @param beanDefinition
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private static ManagedMap parseParameters(NodeList nodeList, RootBeanDefinition beanDefinition) {
         if (nodeList != null && nodeList.getLength() > 0) {

@@ -83,7 +83,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
     // interface type
     private String interfaceName;
     private Class<?> interfaceClass;
-    // reference to interface impl
+    // reference to interface impl 接口实现类
     private T ref;
     // service name
     private String path;
@@ -217,6 +217,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         }
     }
 
+    // dubbo://service-host/com.foo.FooService?version=1.0.0
     protected synchronized void doExport() {
         if (unexported) {
             throw new IllegalStateException("Already unexported!");

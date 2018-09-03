@@ -45,6 +45,8 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class DubboProtocolTest {
+
+
     private Protocol protocol = ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
     private ProxyFactory proxy = ExtensionLoader.getExtensionLoader(ProxyFactory.class).getAdaptiveExtension();
 
