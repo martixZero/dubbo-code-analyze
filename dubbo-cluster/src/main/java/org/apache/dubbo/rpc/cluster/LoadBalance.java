@@ -28,6 +28,15 @@ import java.util.List;
 
 /**
  * LoadBalance. (SPI, Singleton, ThreadSafe)
+ *
+ * 负载均衡 默认为随机 random
+ *
+ *
+ * <dubbo:protocol loadbalance="xxx" />
+ <!-- 缺省值设置，当<dubbo:protocol>没有配置loadbalance时，使用此配置 -->
+ <dubbo:provider loadbalance="xxx" />
+
+
  * <p>
  * <a href="http://en.wikipedia.org/wiki/Load_balancing_(computing)">Load-Balancing</a>
  *
@@ -39,10 +48,11 @@ public interface LoadBalance {
     /**
      * select one invoker in list.
      *
-     * @param invokers   invokers.
-     * @param url        refer url
+     *
+     * @param invokers   invokers. 多个invokers
+     * @param url        refer url  被引用的url
      * @param invocation invocation.
-     * @return selected invoker.
+     * @return selected invoker. 选择的invoker
      */
     @Adaptive("loadbalance")
     <T> Invoker<T> select(List<Invoker<T>> invokers, URL url, Invocation invocation) throws RpcException;

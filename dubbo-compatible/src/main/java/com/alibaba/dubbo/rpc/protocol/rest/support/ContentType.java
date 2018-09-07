@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc.protocol.rest.support;
+package org.apache.dubbo.rpc.protocol.rest.support;
 
 @Deprecated
 public class ContentType extends org.apache.dubbo.rpc.protocol.rest.support.ContentType {

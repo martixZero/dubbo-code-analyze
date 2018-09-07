@@ -22,8 +22,8 @@ import java.util.concurrent.CompletableFuture;
  * AsyncContext works like {@see javax.servlet.AsyncContext} in the Servlet 3.0.
  * An AsyncContext is stated by a call to {@link RpcContext#startAsync()}.
  * <p>
- * The demo is {@see com.alibaba.dubbo.examples.async.AsyncConsumer}
- * and {@see com.alibaba.dubbo.examples.async.AsyncProvider}
+ * The demo is {@see org.apache.dubbo.examples.async.AsyncConsumer}
+ * and {@see org.apache.dubbo.examples.async.AsyncProvider}
  */
 public interface AsyncContext {
 

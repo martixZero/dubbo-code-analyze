@@ -58,7 +58,7 @@ import static org.apache.dubbo.common.utils.NetUtils.isInvalidLocalHost;
 
 /**
  * ReferenceConfig
- *
+ * 引用服务配置Bean
  * @export
  */
 public class ReferenceConfig<T> extends AbstractReferenceConfig {
@@ -77,14 +77,15 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
     private Class<?> asyncInterfaceClass;
     // client type
     private String client;
-    // url for peer-to-peer invocation
+    // url for peer-to-peer invocation  直连url
     private String url;
-    // method configs
+    // method configs 方法配置项
     private List<MethodConfig> methods;
-    // default config
+    // default config 默认配置组
     private ConsumerConfig consumer;
+    // 使用协议
     private String protocol;
-    // interface proxy reference
+    // interface proxy reference 代理调用的接口服务
     private transient volatile T ref;
     private transient volatile Invoker<?> invoker;
     private transient volatile boolean initialized;
@@ -184,6 +185,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
         ref = null;
     }
 
+    // 引用服务初始化
     private void init() {
         if (initialized) {
             return;

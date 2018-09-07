@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.remoting;
+package org.apache.dubbo.remoting;
 
 @Deprecated
 public interface Transporter extends org.apache.dubbo.remoting.Transporter {

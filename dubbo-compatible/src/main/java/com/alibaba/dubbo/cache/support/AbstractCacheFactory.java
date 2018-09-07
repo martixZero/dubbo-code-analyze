@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.cache.support;
+package org.apache.dubbo.cache.support;
 
-import com.alibaba.dubbo.cache.Cache;
-import com.alibaba.dubbo.cache.CacheFactory;
-import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.rpc.Invocation;
+import org.apache.dubbo.cache.Cache;
+import org.apache.dubbo.cache.CacheFactory;
+import org.apache.dubbo.common.Constants;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.rpc.Invocation;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

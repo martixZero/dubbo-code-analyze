@@ -17,11 +17,11 @@
 
 package org.apache.dubbo.cache;
 
-import com.alibaba.dubbo.cache.Cache;
-import com.alibaba.dubbo.cache.CacheFactory;
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.rpc.Invocation;
-import com.alibaba.dubbo.rpc.Invoker;
+import org.apache.dubbo.cache.Cache;
+import org.apache.dubbo.cache.CacheFactory;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.rpc.Invocation;
+import org.apache.dubbo.rpc.Invoker;
 
 import org.apache.dubbo.rpc.RpcInvocation;
 import org.junit.Assert;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.remoting;
+package org.apache.dubbo.remoting;
 
 import org.apache.dubbo.remoting.Channel;
 import org.apache.dubbo.remoting.RemotingException;
@@ -23,15 +23,15 @@ import org.apache.dubbo.remoting.RemotingException;
 @Deprecated
 public interface ChannelHandler extends org.apache.dubbo.remoting.ChannelHandler {
 
-    void connected(com.alibaba.dubbo.remoting.Channel channel) throws com.alibaba.dubbo.remoting.RemotingException;
+    void connected(org.apache.dubbo.remoting.Channel channel) throws org.apache.dubbo.remoting.RemotingException;
 
-    void disconnected(com.alibaba.dubbo.remoting.Channel channel) throws com.alibaba.dubbo.remoting.RemotingException;
+    void disconnected(org.apache.dubbo.remoting.Channel channel) throws org.apache.dubbo.remoting.RemotingException;
 
-    void sent(com.alibaba.dubbo.remoting.Channel channel, Object message) throws com.alibaba.dubbo.remoting.RemotingException;
+    void sent(org.apache.dubbo.remoting.Channel channel, Object message) throws org.apache.dubbo.remoting.RemotingException;
 
-    void received(com.alibaba.dubbo.remoting.Channel channel, Object message) throws com.alibaba.dubbo.remoting.RemotingException;
+    void received(org.apache.dubbo.remoting.Channel channel, Object message) throws org.apache.dubbo.remoting.RemotingException;
 
-    void caught(com.alibaba.dubbo.remoting.Channel channel, Throwable exception) throws com.alibaba.dubbo.remoting.RemotingException;
+    void caught(org.apache.dubbo.remoting.Channel channel, Throwable exception) throws org.apache.dubbo.remoting.RemotingException;
 
     @Override
     default void connected(Channel channel) throws RemotingException {

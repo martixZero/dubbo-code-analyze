@@ -17,9 +17,9 @@
 
 package org.apache.dubbo.config;
 
-import com.alibaba.dubbo.common.Constants;
-import com.alibaba.dubbo.config.MethodConfig;
-import com.alibaba.dubbo.config.ArgumentConfig;
+import org.apache.dubbo.common.Constants;
+import org.apache.dubbo.config.MethodConfig;
+import org.apache.dubbo.config.ArgumentConfig;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 

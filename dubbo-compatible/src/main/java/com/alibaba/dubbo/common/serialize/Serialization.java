@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.common.serialize;
+package org.apache.dubbo.common.serialize;
 
-import com.alibaba.dubbo.common.URL;
+import org.apache.dubbo.common.URL;
 
 import java.io.IOException;
 import java.io.InputStream;

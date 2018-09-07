@@ -62,7 +62,7 @@ public class ActivateComparator implements Comparator<Object> {
             a1After = a1.after();
             a1Order = a1.order();
         } else {
-            com.alibaba.dubbo.common.extension.Activate oa1 = o1.getClass().getAnnotation(com.alibaba.dubbo.common.extension.Activate.class);
+            org.apache.dubbo.common.extension.Activate oa1 = o1.getClass().getAnnotation(org.apache.dubbo.common.extension.Activate.class);
             a1Before = oa1.before();
             a1After = oa1.after();
             a1Order = oa1.order();
@@ -73,7 +73,7 @@ public class ActivateComparator implements Comparator<Object> {
             a2After = a2.after();
             a2Order = a2.order();
         } else {
-            com.alibaba.dubbo.common.extension.Activate oa2 = o2.getClass().getAnnotation(com.alibaba.dubbo.common.extension.Activate.class);
+            org.apache.dubbo.common.extension.Activate oa2 = o2.getClass().getAnnotation(org.apache.dubbo.common.extension.Activate.class);
             a2Before = oa2.before();
             a2After = oa2.after();
             a2Order = oa2.order();

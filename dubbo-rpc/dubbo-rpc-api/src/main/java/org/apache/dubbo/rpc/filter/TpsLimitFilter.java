@@ -28,6 +28,9 @@ import org.apache.dubbo.rpc.filter.tps.DefaultTPSLimiter;
 import org.apache.dubbo.rpc.filter.tps.TPSLimiter;
 
 /**
+ *
+ * Dubbo过滤器 限流设置
+ * 判断是否超过最大限制 超过则抛出异常
  * Limit TPS for either service or service's particular method
  */
 @Activate(group = Constants.PROVIDER, value = Constants.TPS_LIMIT_RATE_KEY)

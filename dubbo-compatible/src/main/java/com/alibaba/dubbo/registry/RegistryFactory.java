@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.registry;
+package org.apache.dubbo.registry;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.registry.Registry;
@@ -23,10 +23,10 @@ import org.apache.dubbo.registry.Registry;
 @Deprecated
 public interface RegistryFactory extends org.apache.dubbo.registry.RegistryFactory {
 
-    Registry getRegistry(com.alibaba.dubbo.common.URL url);
+    Registry getRegistry(org.apache.dubbo.common.URL url);
 
     @Override
     default Registry getRegistry(URL url) {
-        return this.getRegistry(new com.alibaba.dubbo.common.URL(url));
+        return this.getRegistry(new org.apache.dubbo.common.URL(url));
     }
 }

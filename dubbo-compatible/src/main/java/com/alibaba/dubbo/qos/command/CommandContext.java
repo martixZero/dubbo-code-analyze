@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.qos.command;
+package org.apache.dubbo.qos.command;
 
 @Deprecated
 public class CommandContext extends org.apache.dubbo.qos.command.CommandContext {

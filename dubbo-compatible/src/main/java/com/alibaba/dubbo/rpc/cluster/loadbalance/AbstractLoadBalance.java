@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc.cluster.loadbalance;
+package org.apache.dubbo.rpc.cluster.loadbalance;
 
 @Deprecated
 public abstract class AbstractLoadBalance extends org.apache.dubbo.rpc.cluster.loadbalance.AbstractLoadBalance {

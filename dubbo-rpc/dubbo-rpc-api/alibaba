@@ -1,1 +1,1 @@
-[2018-01-07 11:31:14] null:0 -> 192.168.1.24:0 - com.alibaba.dubbo.rpc.support.DemoService echo(java.lang.String) ["aa"]
+[2018-01-07 11:31:14] null:0 -> 192.168.1.24:0 - org.apache.dubbo.rpc.support.DemoService echo(java.lang.String) ["aa"]

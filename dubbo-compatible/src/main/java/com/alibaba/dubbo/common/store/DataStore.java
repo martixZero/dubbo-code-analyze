@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.common.store;
+package org.apache.dubbo.common.store;
 
 @Deprecated
 public interface DataStore extends org.apache.dubbo.common.store.DataStore {

@@ -16,7 +16,7 @@
  */
 package org.apache.dubbo.common.extension;
 
-import com.alibaba.dubbo.common.extension.ExtensionFactory;
+import org.apache.dubbo.common.extension.ExtensionFactory;
 
 public class MyExtensionFactory implements ExtensionFactory {
 

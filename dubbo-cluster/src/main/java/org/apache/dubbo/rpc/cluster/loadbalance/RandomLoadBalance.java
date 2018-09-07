@@ -25,6 +25,12 @@ import java.util.Random;
 
 /**
  * random load balance.
+ * 随机负载  但是要考虑权重大小
+ *
+ * 实现过程：首先判断每个服务提供者的权重是不是一样的，
+ * 不一样的话，则根据总权重随机出一个偏移量，然后进行利用偏移量减少每一个
+ * invoker的权重，直到offset小于0则定位到当前invoker并返回，
+ * 权重一样的话，则直接随机invoker列表的总数。
  *
  */
 public class RandomLoadBalance extends AbstractLoadBalance {
@@ -41,6 +47,7 @@ public class RandomLoadBalance extends AbstractLoadBalance {
         for (int i = 0; i < length; i++) {
             int weight = getWeight(invokers.get(i), invocation);
             totalWeight += weight; // Sum
+            // 判断是不是相同的权重  1和2比
             if (sameWeight && i > 0
                     && weight != getWeight(invokers.get(i - 1), invocation)) {
                 sameWeight = false;
@@ -48,6 +55,7 @@ public class RandomLoadBalance extends AbstractLoadBalance {
         }
         if (totalWeight > 0 && !sameWeight) {
             // If (not every invoker has the same weight & at least one invoker's weight>0), select randomly based on totalWeight.
+            // 获取
             int offset = random.nextInt(totalWeight);
             // Return a invoker based on the random value.
             for (int i = 0; i < length; i++) {

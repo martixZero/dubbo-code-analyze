@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.remoting;
+package org.apache.dubbo.remoting;
 
 import org.apache.dubbo.remoting.Channel;
 

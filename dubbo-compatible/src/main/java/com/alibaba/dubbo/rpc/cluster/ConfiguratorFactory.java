@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.rpc.cluster;
+package org.apache.dubbo.rpc.cluster;
 
 @Deprecated
 public interface ConfiguratorFactory extends org.apache.dubbo.rpc.cluster.ConfiguratorFactory {

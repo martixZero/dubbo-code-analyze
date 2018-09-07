@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.config;
+package org.apache.dubbo.config;
 
 @Deprecated
 public class ModuleConfig extends org.apache.dubbo.config.ModuleConfig {

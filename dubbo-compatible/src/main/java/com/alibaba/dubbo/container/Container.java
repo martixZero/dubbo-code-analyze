@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.container;
+package org.apache.dubbo.container;
 
 @Deprecated
 public interface Container extends org.apache.dubbo.container.Container {

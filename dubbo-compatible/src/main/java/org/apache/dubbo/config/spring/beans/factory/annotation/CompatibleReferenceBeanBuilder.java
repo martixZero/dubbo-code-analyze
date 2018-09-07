@@ -16,7 +16,7 @@
  */
 package org.apache.dubbo.config.spring.beans.factory.annotation;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+import org.apache.dubbo.config.annotation.Reference;
 
 import org.apache.dubbo.config.ConsumerConfig;
 import org.apache.dubbo.config.spring.ReferenceBean;

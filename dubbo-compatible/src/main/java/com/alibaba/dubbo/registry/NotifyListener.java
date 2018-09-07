@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.registry;
+package org.apache.dubbo.registry;
 
-import com.alibaba.dubbo.common.URL;
+import org.apache.dubbo.common.URL;
 
 import java.util.List;
 import java.util.stream.Collectors;

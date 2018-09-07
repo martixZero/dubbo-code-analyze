@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.common.compiler;
+package org.apache.dubbo.common.compiler;
 
 @Deprecated
 public interface Compiler extends org.apache.dubbo.common.compiler.Compiler {

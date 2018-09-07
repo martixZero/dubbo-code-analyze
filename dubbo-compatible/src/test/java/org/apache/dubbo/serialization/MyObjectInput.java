@@ -17,7 +17,7 @@
 
 package org.apache.dubbo.serialization;
 
-import com.alibaba.dubbo.common.serialize.ObjectInput;
+import org.apache.dubbo.common.serialize.ObjectInput;
 
 import java.io.BufferedReader;
 import java.io.IOException;

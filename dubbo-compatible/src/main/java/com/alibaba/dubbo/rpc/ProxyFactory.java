@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc;
+package org.apache.dubbo.rpc;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.rpc.Invoker;
@@ -24,24 +24,24 @@ import org.apache.dubbo.rpc.RpcException;
 @Deprecated
 public interface ProxyFactory extends org.apache.dubbo.rpc.ProxyFactory {
 
-    <T> T getProxy(com.alibaba.dubbo.rpc.Invoker<T> invoker) throws com.alibaba.dubbo.rpc.RpcException;
+    <T> T getProxy(org.apache.dubbo.rpc.Invoker<T> invoker) throws org.apache.dubbo.rpc.RpcException;
 
-    <T> T getProxy(com.alibaba.dubbo.rpc.Invoker<T> invoker, boolean generic) throws com.alibaba.dubbo.rpc.RpcException;
+    <T> T getProxy(org.apache.dubbo.rpc.Invoker<T> invoker, boolean generic) throws org.apache.dubbo.rpc.RpcException;
 
-    <T> com.alibaba.dubbo.rpc.Invoker<T> getInvoker(T proxy, Class<T> type, com.alibaba.dubbo.common.URL url) throws com.alibaba.dubbo.rpc.RpcException;
+    <T> org.apache.dubbo.rpc.Invoker<T> getInvoker(T proxy, Class<T> type, org.apache.dubbo.common.URL url) throws org.apache.dubbo.rpc.RpcException;
 
     @Override
     default <T> T getProxy(Invoker<T> invoker) throws RpcException {
-        return getProxy(new com.alibaba.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker));
+        return getProxy(new org.apache.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker));
     }
 
     @Override
     default <T> T getProxy(Invoker<T> invoker, boolean generic) throws RpcException {
-        return getProxy(new com.alibaba.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker), generic);
+        return getProxy(new org.apache.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker), generic);
     }
 
     @Override
     default <T> Invoker<T> getInvoker(T proxy, Class<T> type, URL url) throws RpcException {
-        return getInvoker(proxy, type, new com.alibaba.dubbo.common.URL(url));
+        return getInvoker(proxy, type, new org.apache.dubbo.common.URL(url));
     }
 }

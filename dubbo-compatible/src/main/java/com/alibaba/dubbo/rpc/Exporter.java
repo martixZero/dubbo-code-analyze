@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc;
+package org.apache.dubbo.rpc;
 
 @Deprecated
 public interface Exporter<T> extends org.apache.dubbo.rpc.Exporter<T> {

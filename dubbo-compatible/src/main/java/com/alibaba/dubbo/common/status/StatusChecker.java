@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.common.status;
+package org.apache.dubbo.common.status;
 
 @Deprecated
 public interface StatusChecker extends org.apache.dubbo.common.status.StatusChecker {

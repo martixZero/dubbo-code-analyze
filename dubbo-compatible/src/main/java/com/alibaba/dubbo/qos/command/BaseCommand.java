@@ -15,17 +15,17 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.qos.command;
+package org.apache.dubbo.qos.command;
 
 import org.apache.dubbo.qos.command.CommandContext;
 
 @Deprecated
 public interface BaseCommand extends org.apache.dubbo.qos.command.BaseCommand {
 
-    String execute(com.alibaba.dubbo.qos.command.CommandContext commandContext, String[] args);
+    String execute(org.apache.dubbo.qos.command.CommandContext commandContext, String[] args);
 
     @Override
     default String execute(CommandContext commandContext, String[] args) {
-        return this.execute(new com.alibaba.dubbo.qos.command.CommandContext(commandContext), args);
+        return this.execute(new org.apache.dubbo.qos.command.CommandContext(commandContext), args);
     }
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.common;
+package org.apache.dubbo.common;
 
 import org.apache.dubbo.common.utils.CollectionUtils;
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc.cluster;
+package org.apache.dubbo.rpc.cluster;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.rpc.Invocation;
@@ -28,21 +28,21 @@ import java.util.stream.Collectors;
 @Deprecated
 public interface Router extends org.apache.dubbo.rpc.cluster.Router {
 
-    com.alibaba.dubbo.common.URL getUrl();
+    org.apache.dubbo.common.URL getUrl();
 
-    <T> List<com.alibaba.dubbo.rpc.Invoker<T>> route(List<com.alibaba.dubbo.rpc.Invoker<T>> invokers,
-                                                     com.alibaba.dubbo.common.URL url,
-                                                     com.alibaba.dubbo.rpc.Invocation invocation)
-            throws com.alibaba.dubbo.rpc.RpcException;
+    <T> List<org.apache.dubbo.rpc.Invoker<T>> route(List<org.apache.dubbo.rpc.Invoker<T>> invokers,
+                                                    org.apache.dubbo.common.URL url,
+                                                    org.apache.dubbo.rpc.Invocation invocation)
+            throws org.apache.dubbo.rpc.RpcException;
 
     @Override
     default <T> List<Invoker<T>> route(List<Invoker<T>> invokers, URL url, Invocation invocation) throws RpcException {
-        List<com.alibaba.dubbo.rpc.Invoker<T>> invs = invokers.stream().map(invoker ->
-                new com.alibaba.dubbo.rpc.Invoker.CompatibleInvoker<T>(invoker)).
+        List<org.apache.dubbo.rpc.Invoker<T>> invs = invokers.stream().map(invoker ->
+                new org.apache.dubbo.rpc.Invoker.CompatibleInvoker<T>(invoker)).
                 collect(Collectors.toList());
 
-        List<com.alibaba.dubbo.rpc.Invoker<T>> res = this.route(invs, new com.alibaba.dubbo.common.URL(url),
-                new com.alibaba.dubbo.rpc.Invocation.CompatibleInvocation(invocation));
+        List<org.apache.dubbo.rpc.Invoker<T>> res = this.route(invs, new org.apache.dubbo.common.URL(url),
+                new org.apache.dubbo.rpc.Invocation.CompatibleInvocation(invocation));
 
         return res.stream().map(inv -> inv.getOriginal()).collect(Collectors.toList());
     }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.validation;
+package org.apache.dubbo.validation;
 
 @Deprecated
 public interface Validator extends org.apache.dubbo.validation.Validator {

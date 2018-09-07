@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.cache;
+package org.apache.dubbo.cache;
 
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.rpc.Invocation;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.rpc.Invocation;
 
 @Deprecated
 public interface CacheFactory extends org.apache.dubbo.cache.CacheFactory {

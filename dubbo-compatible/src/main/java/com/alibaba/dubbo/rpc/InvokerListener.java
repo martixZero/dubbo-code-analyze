@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc;
+package org.apache.dubbo.rpc;
 
 import org.apache.dubbo.rpc.Invoker;
 import org.apache.dubbo.rpc.RpcException;
@@ -23,17 +23,17 @@ import org.apache.dubbo.rpc.RpcException;
 @Deprecated
 public interface InvokerListener extends org.apache.dubbo.rpc.InvokerListener {
 
-    void referred(com.alibaba.dubbo.rpc.Invoker<?> invoker) throws com.alibaba.dubbo.rpc.RpcException;
+    void referred(org.apache.dubbo.rpc.Invoker<?> invoker) throws org.apache.dubbo.rpc.RpcException;
 
-    void destroyed(com.alibaba.dubbo.rpc.Invoker<?> invoker);
+    void destroyed(org.apache.dubbo.rpc.Invoker<?> invoker);
 
     @Override
     default void referred(Invoker<?> invoker) throws RpcException {
-        this.referred(new com.alibaba.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker));
+        this.referred(new org.apache.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker));
     }
 
     @Override
     default void destroyed(Invoker<?> invoker) {
-        this.destroyed(new com.alibaba.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker));
+        this.destroyed(new org.apache.dubbo.rpc.Invoker.CompatibleInvoker<>(invoker));
     }
 }

@@ -16,9 +16,9 @@
  */
 package org.apache.dubbo.common.utils;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.dubbo.common.Constants;
 import org.apache.dubbo.common.io.UnsafeStringWriter;
-import com.alibaba.fastjson.JSON;
 import org.apache.dubbo.common.logger.Logger;
 import org.apache.dubbo.common.logger.LoggerFactory;
 

@@ -17,8 +17,8 @@
 
 package org.apache.dubbo.cache;
 
-import com.alibaba.dubbo.cache.Cache;
-import com.alibaba.dubbo.common.URL;
+import org.apache.dubbo.cache.Cache;
+import org.apache.dubbo.common.URL;
 
 import java.util.HashMap;
 import java.util.Map;

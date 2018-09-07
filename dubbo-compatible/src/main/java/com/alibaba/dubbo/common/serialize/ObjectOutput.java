@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.common.serialize;
+package org.apache.dubbo.common.serialize;
 
 @Deprecated
 public interface ObjectOutput extends org.apache.dubbo.common.serialize.ObjectOutput {

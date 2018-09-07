@@ -17,8 +17,8 @@
 
 package org.apache.dubbo.config;
 
-import com.alibaba.dubbo.config.ModuleConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ModuleConfig;
+import org.apache.dubbo.config.RegistryConfig;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;

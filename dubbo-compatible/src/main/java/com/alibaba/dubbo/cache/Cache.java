@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.cache;
+package org.apache.dubbo.cache;
 
 @Deprecated
 public interface Cache extends org.apache.dubbo.cache.Cache {

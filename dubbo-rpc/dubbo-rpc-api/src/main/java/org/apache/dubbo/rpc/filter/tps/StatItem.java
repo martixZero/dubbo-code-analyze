@@ -18,6 +18,10 @@ package org.apache.dubbo.rpc.filter.tps;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+/**
+ * 限流控制
+ */
 class StatItem {
 
     private String name;
@@ -30,23 +34,37 @@ class StatItem {
 
     private int rate;
 
+    /**
+     * @param name     限流操作名称
+     * @param rate     频率  比如在interval时间内的允许请求次
+     * @param interval 时间段
+     */
     StatItem(String name, int rate, long interval) {
         this.name = name;
         this.rate = rate;
         this.interval = interval;
+        // 上传重置时间点
         this.lastResetTime = System.currentTimeMillis();
+        // 时间段内次数
         this.token = new AtomicInteger(rate);
     }
 
+    /**
+     * 是否允许请求
+     *
+     * @return
+     */
     public boolean isAllowable() {
+        // 1.判断是否过了指定的时间间隔 过了则进行时间点重置 及次数重置
         long now = System.currentTimeMillis();
         if (now > lastResetTime + interval) {
             token.set(rate);
             lastResetTime = now;
         }
-
+        // 获取剩余次数
         int value = token.get();
         boolean flag = false;
+        // 轮询重试  CAS方式 如果允许则会进行计数减一
         while (value > 0 && !flag) {
             flag = token.compareAndSet(value, value - 1);
             value = token.get();

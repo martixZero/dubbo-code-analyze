@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc;
+package org.apache.dubbo.rpc;
 
 @Deprecated
 public interface Filter extends org.apache.dubbo.rpc.Filter {

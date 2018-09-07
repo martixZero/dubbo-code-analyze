@@ -16,9 +16,12 @@
  */
 package com.alibaba.dubbo.rpc;
 
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.common.extension.Adaptive;
-import com.alibaba.dubbo.common.extension.SPI;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.common.extension.Adaptive;
+import org.apache.dubbo.common.extension.SPI;
+import org.apache.dubbo.rpc.Exporter;
+import org.apache.dubbo.rpc.Invoker;
+import org.apache.dubbo.rpc.RpcException;
 
 /**
  * Protocol. (API/SPI, Singleton, ThreadSafe)

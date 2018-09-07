@@ -65,6 +65,10 @@ import static org.apache.dubbo.common.utils.NetUtils.isInvalidPort;
 /**
  * ServiceConfig
  *
+ *
+ * 在 ServiceConfig.export() 或 ReferenceConfig.get() 初始化时，
+ * 将 Bean 对象转换 URL 格式，所有 Bean 属性转成 URL 的参数。
+ *
  * @export
  */
 public class ServiceConfig<T> extends AbstractServiceConfig {
@@ -201,6 +205,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                 delay = provider.getDelay();
             }
         }
+        // 说明有别的线程已经进行了服务暴露
         if (export != null && !export) {
             return;
         }
@@ -217,7 +222,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         }
     }
 
-    // dubbo://service-host/com.foo.FooService?version=1.0.0
+    // dubbo://service-host/com.foo.FooService?version=1.0.0  真正进行服务暴露的地方
     protected synchronized void doExport() {
         if (unexported) {
             throw new IllegalStateException("Already unexported!");
@@ -315,6 +320,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if (path == null || path.length() == 0) {
             path = interfaceName;
         }
+        // 发布服务
         doExportUrls();
         ProviderModel providerModel = new ProviderModel(getUniqueServiceName(), this, ref);
         ApplicationModel.initProviderModel(getUniqueServiceName(), providerModel);
@@ -354,14 +360,17 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private void doExportUrls() {
+        //
         List<URL> registryURLs = loadRegistries(true);
         for (ProtocolConfig protocolConfig : protocols) {
             doExportUrlsFor1Protocol(protocolConfig, registryURLs);
         }
     }
 
+    // 注册服务到注册中心
     private void doExportUrlsFor1Protocol(ProtocolConfig protocolConfig, List<URL> registryURLs) {
         String name = protocolConfig.getName();
+        // 默认dubbo协议
         if (name == null || name.length() == 0) {
             name = "dubbo";
         }

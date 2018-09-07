@@ -162,6 +162,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         if (registries != null && !registries.isEmpty()) {
             for (RegistryConfig config : registries) {
                 String address = config.getAddress();
+                // 注册中心地址
                 if (address == null || address.length() == 0) {
                     address = Constants.ANYHOST_VALUE;
                 }

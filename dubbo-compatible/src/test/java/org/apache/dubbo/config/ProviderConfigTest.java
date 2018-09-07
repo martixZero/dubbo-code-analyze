@@ -17,7 +17,7 @@
 
 package org.apache.dubbo.config;
 
-import com.alibaba.dubbo.config.ProviderConfig;
+import org.apache.dubbo.config.ProviderConfig;
 
 import org.junit.Test;
 

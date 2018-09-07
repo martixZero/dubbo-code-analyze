@@ -17,8 +17,8 @@
 
 package org.apache.dubbo.config;
 
-import com.alibaba.dubbo.rpc.Protocol;
-import com.alibaba.dubbo.config.ProtocolConfig;
+import org.apache.dubbo.rpc.Protocol;
+import org.apache.dubbo.config.ProtocolConfig;
 import org.junit.Test;
 import org.mockito.Mockito;
 

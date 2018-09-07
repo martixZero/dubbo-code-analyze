@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.remoting;
+package org.apache.dubbo.remoting;
 
 @Deprecated
 public interface Channel extends org.apache.dubbo.remoting.Channel {
 
-    com.alibaba.dubbo.common.URL getUrl();
+    org.apache.dubbo.common.URL getUrl();
 
-    com.alibaba.dubbo.remoting.ChannelHandler getChannelHandler();
+    org.apache.dubbo.remoting.ChannelHandler getChannelHandler();
 }

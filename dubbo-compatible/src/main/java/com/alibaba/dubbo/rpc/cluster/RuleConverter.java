@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc.cluster;
+package org.apache.dubbo.rpc.cluster;
 
 import org.apache.dubbo.common.URL;
 
@@ -25,11 +25,11 @@ import java.util.stream.Collectors;
 @Deprecated
 public interface RuleConverter extends org.apache.dubbo.rpc.cluster.RuleConverter {
 
-    List<com.alibaba.dubbo.common.URL> convert(com.alibaba.dubbo.common.URL subscribeUrl, Object source);
+    List<org.apache.dubbo.common.URL> convert(org.apache.dubbo.common.URL subscribeUrl, Object source);
 
     @Override
     default List<URL> convert(URL subscribeUrl, Object source) {
-        return this.convert(new com.alibaba.dubbo.common.URL(subscribeUrl), source).
+        return this.convert(new org.apache.dubbo.common.URL(subscribeUrl), source).
                 stream().map(url -> url.getOriginalURL()).collect(Collectors.toList());
     }
 }

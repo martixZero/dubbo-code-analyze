@@ -67,6 +67,8 @@ import static org.junit.Assert.fail;
 import static org.junit.matchers.JUnitMatchers.containsString;
 
 public class ExtensionLoaderTest {
+
+
     @Test
     public void test_getExtensionLoader_Null() throws Exception {
         try {

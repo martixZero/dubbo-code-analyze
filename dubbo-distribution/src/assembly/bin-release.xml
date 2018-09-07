@@ -43,7 +43,7 @@
                 <include>org.apache.dubbo:*</include>
             </includes>
             <excludes>
-                <exclude>com.alibaba:fastjson</exclude>
+                <exclude>org.apache:fastjson</exclude>
             </excludes>
         </dependencySet>
     </dependencySets>

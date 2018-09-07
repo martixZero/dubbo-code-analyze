@@ -18,10 +18,16 @@ package org.apache.dubbo.common.utils;
 
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
+/**
+ * 基于CAS思想进行的原子操作
+ */
 public class AtomicPositiveInteger extends Number {
 
     private static final long serialVersionUID = -3038533876489105940L;
 
+    /**
+     * 对index字段保证CAS原子操作
+     */
     private static final AtomicIntegerFieldUpdater<AtomicPositiveInteger> indexUpdater =
             AtomicIntegerFieldUpdater.newUpdater(AtomicPositiveInteger.class, "index");
 

@@ -17,7 +17,7 @@
 
 package org.apache.dubbo.generic;
 
-import com.alibaba.dubbo.rpc.service.GenericService;
+import org.apache.dubbo.rpc.service.GenericService;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.extension.ExtensionLoader;

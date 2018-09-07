@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.monitor;
+package org.apache.dubbo.monitor;
 
 import org.apache.dubbo.common.URL;
 
@@ -25,19 +25,19 @@ import java.util.stream.Collectors;
 @Deprecated
 public interface Monitor extends org.apache.dubbo.monitor.Monitor {
 
-    com.alibaba.dubbo.common.URL getUrl();
+    org.apache.dubbo.common.URL getUrl();
 
-    void collect(com.alibaba.dubbo.common.URL statistics);
+    void collect(org.apache.dubbo.common.URL statistics);
 
-    List<com.alibaba.dubbo.common.URL> lookup(com.alibaba.dubbo.common.URL query);
+    List<org.apache.dubbo.common.URL> lookup(org.apache.dubbo.common.URL query);
 
     @Override
     default void collect(URL statistics) {
-        this.collect(new com.alibaba.dubbo.common.URL(statistics));
+        this.collect(new org.apache.dubbo.common.URL(statistics));
     }
 
     @Override
     default List<URL> lookup(URL query) {
-        return this.lookup(new com.alibaba.dubbo.common.URL(query)).stream().map(url -> url.getOriginalURL()).collect(Collectors.toList());
+        return this.lookup(new org.apache.dubbo.common.URL(query)).stream().map(url -> url.getOriginalURL()).collect(Collectors.toList());
     }
 }

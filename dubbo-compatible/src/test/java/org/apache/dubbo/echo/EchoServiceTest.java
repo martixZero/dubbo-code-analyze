@@ -17,7 +17,7 @@
 
 package org.apache.dubbo.echo;
 
-import com.alibaba.dubbo.rpc.service.EchoService;
+import org.apache.dubbo.rpc.service.EchoService;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.extension.ExtensionLoader;

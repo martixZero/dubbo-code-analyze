@@ -16,8 +16,10 @@
  */
 package com.alibaba.dubbo.rpc;
 
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.common.extension.SPI;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.common.extension.SPI;
+import org.apache.dubbo.rpc.Invoker;
+import org.apache.dubbo.rpc.RpcException;
 
 /**
  * InvokerListener. (SPI, Singleton, ThreadSafe)
@@ -32,7 +34,7 @@ public interface InvokerListener {
      *当有服务引用时，触发该事件。
      * @param invoker
      * @throws RpcException
-     * @see com.alibaba.dubbo.rpc.Protocol#refer(Class, URL)
+     * @see org.apache.dubbo.rpc.Protocol#refer(Class, URL)
      */
     void referred(Invoker<?> invoker) throws RpcException;
 
@@ -40,7 +42,7 @@ public interface InvokerListener {
      * The invoker destroyed.
      *
      * @param invoker
-     * @see com.alibaba.dubbo.rpc.Invoker#destroy()
+     * @see org.apache.dubbo.rpc.Invoker#destroy()
      */
     void destroyed(Invoker<?> invoker);
 

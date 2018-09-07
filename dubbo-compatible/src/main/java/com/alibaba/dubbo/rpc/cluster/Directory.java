@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc.cluster;
+package org.apache.dubbo.rpc.cluster;
 
-import com.alibaba.dubbo.common.URL;
+import org.apache.dubbo.common.URL;
 
 import org.apache.dubbo.rpc.Invocation;
 import org.apache.dubbo.rpc.Invoker;
@@ -31,11 +31,11 @@ public interface Directory<T> extends org.apache.dubbo.rpc.cluster.Directory<T> 
 
     URL getUrl();
 
-    List<com.alibaba.dubbo.rpc.Invoker<T>> list(com.alibaba.dubbo.rpc.Invocation invocation) throws com.alibaba.dubbo.rpc.RpcException;
+    List<org.apache.dubbo.rpc.Invoker<T>> list(org.apache.dubbo.rpc.Invocation invocation) throws org.apache.dubbo.rpc.RpcException;
 
     @Override
     default List<Invoker<T>> list(Invocation invocation) throws RpcException {
-        List<com.alibaba.dubbo.rpc.Invoker<T>> res = this.list(new com.alibaba.dubbo.rpc.Invocation.CompatibleInvocation(invocation));
+        List<org.apache.dubbo.rpc.Invoker<T>> res = this.list(new org.apache.dubbo.rpc.Invocation.CompatibleInvocation(invocation));
         return res.stream().map(i -> i.getOriginal()).collect(Collectors.toList());
     }
 }

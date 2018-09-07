@@ -78,10 +78,10 @@ http://dubbo.apache.org/docs/zh-cn/dev/sources/images/dubbo-relation.jpg
         增加了对扩展点 IoC 和 AOP 的支持，一个扩展点可以直接 setter 注入其它扩展点。
     2.约定：
         在扩展类的 jar 包内 [1]，放置扩展点配置文件 META-INF/dubbo/接口全限定名，内容为：配置名=扩展实现类全限定名，多个实现类用换行符分隔。
-        以扩展 Dubbo 的协议为例，在协议的实现 jar 包内放置文本文件：META-INF/dubbo/com.alibaba.dubbo.rpc.Protocol，内容为：
-        xxx=com.alibaba.xxx.XxxProtocol
-        package com.alibaba.xxx;  
-        import com.alibaba.dubbo.rpc.Protocol;
+        以扩展 Dubbo 的协议为例，在协议的实现 jar 包内放置文本文件：META-INF/dubbo/org.apache.dubbo.rpc.Protocol，内容为：
+        xxx=org.apache.xxx.XxxProtocol
+        package org.apache.xxx;  
+        import org.apache.dubbo.rpc.Protocol;
         public class XxxProtocol implemenets Protocol { 
             // ...
         }
@@ -92,8 +92,8 @@ http://dubbo.apache.org/docs/zh-cn/dev/sources/images/dubbo-relation.jpg
     扩展点自动包装
     自动包装扩展点的 Wrapper 类。ExtensionLoader 在加载扩展点时，如果加载到的扩展点有拷贝构造函数，则判定为扩展点 Wrapper 类
     Wrapper类内容：
-    package com.alibaba.xx
-    import com.alibaba.dubbo.rpc.Protocol;
+    package org.apache.xx
+    import org.apache.dubbo.rpc.Protocol;
     public class XxxProtocolWrapper implemenets Protocol {
         Protocol impl;
         public XxxProtocol(Protocol protocol) { impl = protocol; }
@@ -182,20 +182,20 @@ ExtensionLoader 加载 CarMaker 的扩展点实现 RaceCar 时，setWheelMaker �
 扩展点自动激活
     对于集合类扩展点，比如：Filter, InvokerListener, ExportListener, TelnetHandler, StatusChecker 等，可以同时加载多个实现，
     此时，可以用自动激活来简化配置，如：
-    import com.alibaba.dubbo.common.extension.Activate;
-    import com.alibaba.dubbo.rpc.Filter;
+    import org.apache.dubbo.common.extension.Activate;
+    import org.apache.dubbo.rpc.Filter;
     @Activate // 无条件自动激活
     public class XxxFilter implements Filter {
         // ...
     }
-    import com.alibaba.dubbo.common.extension.Activate;
-    import com.alibaba.dubbo.rpc.Filter; 
+    import org.apache.dubbo.common.extension.Activate;
+    import org.apache.dubbo.rpc.Filter; 
     @Activate("xxx") // 当配置了xxx参数，并且参数为有效值时激活，比如配了cache="lru"，自动激活CacheFilter。
     public class XxxFilter implements Filter {
         // ...
     }
-    import com.alibaba.dubbo.common.extension.Activate;
-    import com.alibaba.dubbo.rpc.Filter;
+    import org.apache.dubbo.common.extension.Activate;
+    import org.apache.dubbo.rpc.Filter;
     @Activate(group = "provider", value = "xxx") // 只对提供方激活，group可选"provider"或"consumer"
     public class XxxFilter implements Filter {
         // ...
@@ -217,7 +217,7 @@ ExtensionLoader 加载 CarMaker 的扩展点实现 RaceCar 时，setWheelMaker �
         在没有注册中心，直接暴露提供者的情况下 [1]，ServiceConfig 解析出的 URL 的格式为： dubbo://service-host/com.foo.FooService?version=1.0.0。
         基于扩展点自适应机制，通过 URL 的 dubbo:// 协议头识别，直接调用 DubboProtocol的 export() 方法，打开服务端口。
         2. 向注册中心暴露服务：
-        在有注册中心，需要注册提供者地址的情况下 [2]，ServiceConfig 解析出的 URL 的格式为: registry://registry-host/com.alibaba.dubbo.registry.RegistryService?export=URL.encode("dubbo://service-host/com.foo.FooService?version=1.0.0")，
+        在有注册中心，需要注册提供者地址的情况下 [2]，ServiceConfig 解析出的 URL 的格式为: registry://registry-host/org.apache.dubbo.registry.RegistryService?export=URL.encode("dubbo://service-host/com.foo.FooService?version=1.0.0")，
         基于扩展点自适应机制，通过 URL 的 registry:// 协议头识别，就会调用 RegistryProtocol 的 export() 方法，将 export 参数中的提供者 URL，先注册到注册中心。
         再重新传给 Protocol 扩展点进行暴露： dubbo://service-host/com.foo.FooService?version=1.0.0，然后基于扩展点自适应机制，通过提供者 URL 的 dubbo:// 协议头识别，就会调用 DubboProtocol 的 export() 方法，打开服务端口。
 引用服务
@@ -227,7 +227,7 @@ ExtensionLoader 加载 CarMaker 的扩展点实现 RaceCar 时，setWheelMaker �
 基于扩展点自适应机制，通过 URL 的 dubbo:// 协议头识别，直接调用 DubboProtocol 的 refer() 方法，返回提供者引用。
 
 2. 从注册中心发现引用服务：
-在有注册中心，通过注册中心发现提供者地址的情况下 [4]，ReferenceConfig 解析出的 URL 的格式为： registry://registry-host/com.alibaba.dubbo.registry.RegistryService?refer=URL.encode("consumer://consumer-host/com.foo.FooService?version=1.0.0")。
+在有注册中心，通过注册中心发现提供者地址的情况下 [4]，ReferenceConfig 解析出的 URL 的格式为： registry://registry-host/org.apache.dubbo.registry.RegistryService?refer=URL.encode("consumer://consumer-host/com.foo.FooService?version=1.0.0")。
 
 基于扩展点自适应机制，通过 URL 的 registry:// 协议头识别，就会调用 RegistryProtocol 的 refer() 方法，基于 refer 参数中的条件，查询提供者 URL，如： dubbo://service-host/com.foo.FooService?version=1.0.0。
 
@@ -267,4 +267,54 @@ RMI 协议的 Invoker 转为 Exporter 发生在 RmiProtocol类的 export 方法�
         关于每种协议如 RMI/Dubbo/Web service 等它们在调用 refer 方法生成 Invoker 实例的细节和上一章节所描述的类似。
 满眼都是 Invoker
 由于 Invoker 是 Dubbo 领域模型中非常重要的一个概念，很多设计思路都是向它靠拢。这就使得 Invoker 渗透在整个实现代码里，对于刚开始接触 Dubbo 的人，确实容易给搞混了。 下面我们用一个精简的图来说明最重要的两种 Invoker：服务提供 Invoker 和服务消费 Invoker：
+
+
+
+
+
+
+
+clsuter模块：
+    负载均衡 路由服务  结果合并  集群容错  
+1.负载均衡
+    random： * 随机负载  但是要考虑权重大小
+            *
+            * 实现过程：首先判断每个服务提供者的权重是不是一样的，
+            * 不一样的话，则根据总权重随机出一个偏移量，然后进行利用偏移量减少每一个
+            * invoker的权重，直到offset小于0则定位到当前invoker并返回，
+            * 权重一样的话，则直接随机invoker列表的总数。
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+Dubbo SPI扩展加载机制：
+java spi的具体约定为:当服务的提供者，提供了服务接口的一种实现之后，在jar包的META-INF/services/目录里同时创建一个以服务接口命名的文件。
+该文件里就是实现该服务接口的具体实现类。而当外部程序装配这个模块的时候，就能通过该jar包META-INF/services/里的配置文件找到具体的实现类
+名，并装载实例化，完成模块的注入。 基于这样一个约定就能很好的找到服务接口的实现类，而不需要再代码里制定。jdk提供服务实现查找的一个工具
+类：java.util.ServiceLoader。
+
+在理解Dubbo的SPI之前，要明确几个核心概念：
+扩展点 Dubbo作用灵活的框架，并不会强制所有用户都一定使用Dubbo提供的某些架构。例如注册中心（Registry），Dubbo提供了zk和redis，
+但是如果我们更倾向于其他的注册中心的话，我们可以替换掉Dubbo提供的注册中心。针对这种可被替换的技术实现点我们称之为扩展点，
+类似的扩展点有很多，例如Protocol，Filter，Loadbalance等等。
+加载扩展点时，自动注入依赖的扩展点。加载扩展点时，扩展点实现类的成员如果为其它扩展点类型，ExtensionLoader 在会自动注入依赖的扩展点。
+ExtensionLoader 通过扫描扩展点实现类的所有 setter 方法来判定其成员。即 ExtensionLoader 会执行扩展点的拼装操作。
+
+ExtensionLoader:
+  之所以把ExtensionLoader标这么大是因为其太重要，作为整个SPI的核心，ExtensionLoader起着无可替代的作用，
+  下面的整篇文章都在围绕着这个类进行讲解，足以看出他是多么重要了。  
+  鉴于ExtensionLoade的用法比较多的都是如下用法，我就以下面的调用为例开始介绍ExtensionLoader （调用的链路比较长，大家要耐心点哈）
+  
 

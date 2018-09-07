@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/apache/incubator-dubbo/branch/master/graph/badge.svg)](https://codecov.io/gh/apache/incubator-dubbo)
 [![Gitter](https://badges.gitter.im/alibaba/dubbo.svg)](https://gitter.im/alibaba/dubbo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 ![license](https://img.shields.io/github/license/alibaba/dubbo.svg)
-![maven](https://img.shields.io/maven-central/v/com.alibaba/dubbo.svg)
+![maven](https://img.shields.io/maven-central/v/org.apache/dubbo.svg)
 
 Apache Dubbo (incubating) is a high-performance, java based open source RPC framework. Please visit [official site ](http://dubbo.incubator.apache.org) for quick start and documentations, as well as [Wiki](https://github.com/apache/incubator-dubbo/wiki) for news, FAQ, and release notes.
 
@@ -29,7 +29,7 @@ We are now collecting dubbo user info in order to help us to improve dubbo bette
 
 ```xml
 <dependency>
-    <groupId>com.alibaba</groupId>
+    <groupId>org.apache</groupId>
     <artifactId>dubbo</artifactId>
     <version>2.6.2</version>
 </dependency>
@@ -64,9 +64,9 @@ public class GreetingServiceImpl implements GreetingService {
 ```java
 package org.apache.dubbo.demo.provider;
 
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ServiceConfig;
 import org.apache.dubbo.demo.GreetingService;
 
 import java.io.IOException;
@@ -90,9 +90,9 @@ public class Provider {
 ```java
 package org.apache.dubbo.demo.consumer;
 
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.ReferenceConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.demo.GreetingService;
 
 public class Consumer {

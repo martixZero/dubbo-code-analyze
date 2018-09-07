@@ -34,6 +34,7 @@ public class DefaultTPSLimiter implements TPSLimiter {
         long interval = url.getParameter(Constants.TPS_LIMIT_INTERVAL_KEY,
                 Constants.DEFAULT_TPS_LIMIT_INTERVAL);
         String serviceKey = url.getServiceKey();
+        // 表示设置了限流阈值
         if (rate > 0) {
             StatItem statItem = stats.get(serviceKey);
             if (statItem == null) {
@@ -43,6 +44,7 @@ public class DefaultTPSLimiter implements TPSLimiter {
             }
             return statItem.isAllowable();
         } else {
+            // 期间发生变更 不使用了阈值，则移除掉
             StatItem statItem = stats.get(serviceKey);
             if (statItem != null) {
                 stats.remove(serviceKey);

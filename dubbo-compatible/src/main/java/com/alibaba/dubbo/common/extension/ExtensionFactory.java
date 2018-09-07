@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.dubbo.common.extension;
+package org.apache.dubbo.common.extension;
 
 @Deprecated
 public interface ExtensionFactory extends org.apache.dubbo.common.extension.ExtensionFactory {

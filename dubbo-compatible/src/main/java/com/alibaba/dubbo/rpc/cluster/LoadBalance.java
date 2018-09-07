@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.rpc.cluster;
+package org.apache.dubbo.rpc.cluster;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.rpc.Invocation;
@@ -28,17 +28,17 @@ import java.util.stream.Collectors;
 @Deprecated
 public interface LoadBalance extends org.apache.dubbo.rpc.cluster.LoadBalance {
 
-    <T> com.alibaba.dubbo.rpc.Invoker<T> select(List<com.alibaba.dubbo.rpc.Invoker<T>> invokers,
-                                                com.alibaba.dubbo.common.URL url,
-                                                com.alibaba.dubbo.rpc.Invocation invocation) throws RpcException;
+    <T> org.apache.dubbo.rpc.Invoker<T> select(List<org.apache.dubbo.rpc.Invoker<T>> invokers,
+                                               org.apache.dubbo.common.URL url,
+                                               org.apache.dubbo.rpc.Invocation invocation) throws RpcException;
 
     @Override
     default <T> Invoker<T> select(List<Invoker<T>> invokers, URL url, Invocation invocation) throws RpcException {
-        List<com.alibaba.dubbo.rpc.Invoker<T>> invs = invokers.stream().
-                map(invoker -> new com.alibaba.dubbo.rpc.Invoker.CompatibleInvoker<T>(invoker)).
+        List<org.apache.dubbo.rpc.Invoker<T>> invs = invokers.stream().
+                map(invoker -> new org.apache.dubbo.rpc.Invoker.CompatibleInvoker<T>(invoker)).
                 collect(Collectors.toList());
 
-        return select(invs, new com.alibaba.dubbo.common.URL(url),
-                new com.alibaba.dubbo.rpc.Invocation.CompatibleInvocation(invocation));
+        return select(invs, new org.apache.dubbo.common.URL(url),
+                new org.apache.dubbo.rpc.Invocation.CompatibleInvocation(invocation));
     }
 }

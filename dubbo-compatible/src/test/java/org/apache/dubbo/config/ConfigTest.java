@@ -20,10 +20,10 @@ package org.apache.dubbo.config;
 import org.apache.dubbo.service.DemoService;
 import org.apache.dubbo.service.DemoServiceImpl;
 
-import com.alibaba.dubbo.config.ApplicationConfig;
-import com.alibaba.dubbo.config.ReferenceConfig;
-import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.config.ServiceConfig;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.apache.dubbo.config.ServiceConfig;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,14 +38,14 @@ public class ConfigTest {
 
     @Test
     public void testConfig() {
-        com.alibaba.dubbo.config.ServiceConfig<DemoService> service = new ServiceConfig<>();
-        service.setApplication(new com.alibaba.dubbo.config.ApplicationConfig("first-dubbo-provider"));
-        service.setRegistry(new com.alibaba.dubbo.config.RegistryConfig("multicast://224.5.6.7:1234"));
+        org.apache.dubbo.config.ServiceConfig<DemoService> service = new ServiceConfig<>();
+        service.setApplication(new org.apache.dubbo.config.ApplicationConfig("first-dubbo-provider"));
+        service.setRegistry(new org.apache.dubbo.config.RegistryConfig("multicast://224.5.6.7:1234"));
         service.setInterface(DemoService.class);
         service.setRef(new DemoServiceImpl());
         service.export();
 
-        com.alibaba.dubbo.config.ReferenceConfig<DemoService> reference = new ReferenceConfig<>();
+        org.apache.dubbo.config.ReferenceConfig<DemoService> reference = new ReferenceConfig<>();
         reference.setApplication(new ApplicationConfig("first-dubbo-client"));
         reference.setRegistry(new RegistryConfig("multicast://224.5.6.7:1234"));
         reference.setInterface(DemoService.class);

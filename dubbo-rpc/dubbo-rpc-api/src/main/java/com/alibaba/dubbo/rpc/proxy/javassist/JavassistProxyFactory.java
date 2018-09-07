@@ -16,13 +16,13 @@
  */
 package com.alibaba.dubbo.rpc.proxy.javassist;
 
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.common.bytecode.Proxy;
-import com.alibaba.dubbo.common.bytecode.Wrapper;
-import com.alibaba.dubbo.rpc.Invoker;
-import com.alibaba.dubbo.rpc.proxy.AbstractProxyFactory;
-import com.alibaba.dubbo.rpc.proxy.AbstractProxyInvoker;
-import com.alibaba.dubbo.rpc.proxy.InvokerInvocationHandler;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.common.bytecode.Proxy;
+import org.apache.dubbo.common.bytecode.Wrapper;
+import org.apache.dubbo.rpc.Invoker;
+import org.apache.dubbo.rpc.proxy.AbstractProxyFactory;
+import org.apache.dubbo.rpc.proxy.AbstractProxyInvoker;
+import org.apache.dubbo.rpc.proxy.InvokerInvocationHandler;
 
 /**
  * JavaassistRpcProxyFactory

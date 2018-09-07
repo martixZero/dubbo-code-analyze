@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.remoting.telnet;
+package org.apache.dubbo.remoting.telnet;
 
 import org.apache.dubbo.remoting.Channel;
 import org.apache.dubbo.remoting.RemotingException;
@@ -23,7 +23,7 @@ import org.apache.dubbo.remoting.RemotingException;
 @Deprecated
 public interface TelnetHandler extends org.apache.dubbo.remoting.telnet.TelnetHandler {
 
-    String telnet(com.alibaba.dubbo.remoting.Channel channel, String message) throws com.alibaba.dubbo.remoting.RemotingException;
+    String telnet(org.apache.dubbo.remoting.Channel channel, String message) throws org.apache.dubbo.remoting.RemotingException;
 
     @Override
     default String telnet(Channel channel, String message) throws RemotingException {

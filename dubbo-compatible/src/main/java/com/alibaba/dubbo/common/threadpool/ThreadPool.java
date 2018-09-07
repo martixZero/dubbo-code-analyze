@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.common.threadpool;
+package org.apache.dubbo.common.threadpool;
 
 import org.apache.dubbo.common.URL;
 
@@ -24,10 +24,10 @@ import java.util.concurrent.Executor;
 @Deprecated
 public interface ThreadPool extends org.apache.dubbo.common.threadpool.ThreadPool {
 
-    Executor getExecutor(com.alibaba.dubbo.common.URL url);
+    Executor getExecutor(org.apache.dubbo.common.URL url);
 
     @Override
     default Executor getExecutor(URL url) {
-        return getExecutor(new com.alibaba.dubbo.common.URL(url));
+        return getExecutor(new org.apache.dubbo.common.URL(url));
     }
 }

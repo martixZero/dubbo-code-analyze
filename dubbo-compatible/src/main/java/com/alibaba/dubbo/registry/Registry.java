@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.alibaba.dubbo.registry;
+package org.apache.dubbo.registry;
 
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.registry.NotifyListener;
@@ -26,43 +26,43 @@ import java.util.stream.Collectors;
 @Deprecated
 public interface Registry extends org.apache.dubbo.registry.Registry {
 
-    com.alibaba.dubbo.common.URL getUrl();
+    org.apache.dubbo.common.URL getUrl();
 
-    void register(com.alibaba.dubbo.common.URL url);
+    void register(org.apache.dubbo.common.URL url);
 
-    void unregister(com.alibaba.dubbo.common.URL url);
+    void unregister(org.apache.dubbo.common.URL url);
 
-    void subscribe(com.alibaba.dubbo.common.URL url, com.alibaba.dubbo.registry.NotifyListener listener);
+    void subscribe(org.apache.dubbo.common.URL url, org.apache.dubbo.registry.NotifyListener listener);
 
-    void unsubscribe(com.alibaba.dubbo.common.URL url, com.alibaba.dubbo.registry.NotifyListener listener);
+    void unsubscribe(org.apache.dubbo.common.URL url, org.apache.dubbo.registry.NotifyListener listener);
 
-    List<com.alibaba.dubbo.common.URL> lookup(com.alibaba.dubbo.common.URL url);
+    List<org.apache.dubbo.common.URL> lookup(org.apache.dubbo.common.URL url);
 
     @Override
     default void register(URL url) {
-        this.register(new com.alibaba.dubbo.common.URL(url));
+        this.register(new org.apache.dubbo.common.URL(url));
     }
 
     @Override
     default void unregister(URL url) {
-        this.unregister(new com.alibaba.dubbo.common.URL(url));
+        this.unregister(new org.apache.dubbo.common.URL(url));
     }
 
     @Override
     default void subscribe(URL url, NotifyListener listener) {
-        this.subscribe(new com.alibaba.dubbo.common.URL(url),
-                new com.alibaba.dubbo.registry.NotifyListener.CompatibleNotifyListener(listener));
+        this.subscribe(new org.apache.dubbo.common.URL(url),
+                new org.apache.dubbo.registry.NotifyListener.CompatibleNotifyListener(listener));
     }
 
     @Override
     default void unsubscribe(URL url, NotifyListener listener) {
-        this.unsubscribe(new com.alibaba.dubbo.common.URL(url),
-                new com.alibaba.dubbo.registry.NotifyListener.CompatibleNotifyListener(listener));
+        this.unsubscribe(new org.apache.dubbo.common.URL(url),
+                new org.apache.dubbo.registry.NotifyListener.CompatibleNotifyListener(listener));
     }
 
     @Override
     default List<URL> lookup(URL url) {
-        return this.lookup(new com.alibaba.dubbo.common.URL(url)).stream().map(u -> u.getOriginalURL()).
+        return this.lookup(new org.apache.dubbo.common.URL(url)).stream().map(u -> u.getOriginalURL()).
                 collect(Collectors.toList());
     }
 }

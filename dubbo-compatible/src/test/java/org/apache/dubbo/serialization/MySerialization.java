@@ -17,10 +17,10 @@
 
 package org.apache.dubbo.serialization;
 
-import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.common.serialize.ObjectInput;
-import com.alibaba.dubbo.common.serialize.ObjectOutput;
-import com.alibaba.dubbo.common.serialize.Serialization;
+import org.apache.dubbo.common.URL;
+import org.apache.dubbo.common.serialize.ObjectInput;
+import org.apache.dubbo.common.serialize.ObjectOutput;
+import org.apache.dubbo.common.serialize.Serialization;
 
 import java.io.IOException;
 import java.io.InputStream;
