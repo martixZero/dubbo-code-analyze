@@ -306,7 +306,8 @@ java spi的具体约定为:当服务的提供者，提供了服务接口的一�
 类：java.util.ServiceLoader。
 
 在理解Dubbo的SPI之前，要明确几个核心概念：
-扩展点 Dubbo作用灵活的框架，并不会强制所有用户都一定使用Dubbo提供的某些架构。例如注册中心（Registry），Dubbo提供了zk和redis，
+扩展点： 
+    Dubbo作用灵活的框架，并不会强制所有用户都一定使用Dubbo提供的某些架构。例如注册中心（Registry），Dubbo提供了zk和redis，
 但是如果我们更倾向于其他的注册中心的话，我们可以替换掉Dubbo提供的注册中心。针对这种可被替换的技术实现点我们称之为扩展点，
 类似的扩展点有很多，例如Protocol，Filter，Loadbalance等等。
 加载扩展点时，自动注入依赖的扩展点。加载扩展点时，扩展点实现类的成员如果为其它扩展点类型，ExtensionLoader 在会自动注入依赖的扩展点。
@@ -316,5 +317,13 @@ ExtensionLoader:
   之所以把ExtensionLoader标这么大是因为其太重要，作为整个SPI的核心，ExtensionLoader起着无可替代的作用，
   下面的整篇文章都在围绕着这个类进行讲解，足以看出他是多么重要了。  
   鉴于ExtensionLoade的用法比较多的都是如下用法，我就以下面的调用为例开始介绍ExtensionLoader （调用的链路比较长，大家要耐心点哈）
+  详情见代码注释  代码起始阅读位置： ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension();
+  大致逻辑：
+  1.为了获得一个扩展点的适配类，首先会看缓存中有没有已经加载过的适配类，如果有的话就直接返回，没有的话就进入第2步。
+  2.加载所有的配置文件，将所有的配置类都load进内存并且在ExtensionLoader内部做好缓存，如果配置的文件中有适配类就缓存起来，如果没有适配
+  类就自行通过代码自行创建适配类并且缓存起来（代码之后给出样例）。
+  3.在加载配置文件的时候，会依次将包装类，自激活的类都进行缓存。
+  4.将获取完适配类时候，如果适配类的set方法对应的属性也是扩展点话，会依次注入对应的属性的适配类（循环进行）。
+  讲到这里的话适配类这段代码逻辑已经大致都解释过了，下面看一下Dubbo自己生成的适配类代码是怎样的(以Protocol为例)：
   
 

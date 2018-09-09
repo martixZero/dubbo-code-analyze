@@ -29,6 +29,7 @@ import org.apache.dubbo.common.extension.ext6_inject.Ext6;
 import org.apache.dubbo.common.extension.ext6_inject.impl.Ext6Impl2;
 import org.apache.dubbo.common.utils.LogUtil;
 
+import org.apache.logging.log4j.core.net.Protocol;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -47,8 +48,13 @@ public class ExtensionLoader_Adaptive_Test {
 
     @Test
     public void test_useAdaptiveClass() throws Exception {
+
+        ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
+        // 加载扩展类加载器
         ExtensionLoader<HasAdaptiveExt> loader = ExtensionLoader.getExtensionLoader(HasAdaptiveExt.class);
+        // 获取适配扩展点
         HasAdaptiveExt ext = loader.getAdaptiveExtension();
+        // 判断是否添加了HasAdaptiveExt_ManualAdaptive
         assertTrue(ext instanceof HasAdaptiveExt_ManualAdaptive);
     }
 

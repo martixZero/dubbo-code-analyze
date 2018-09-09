@@ -100,8 +100,10 @@ public class ExtensionLoader<T> {
 
     //在Dubbo源码中大面积使用这种写法，都是获得某个接口的适配类，在真正执行的时候才决定最终的作用类
 
+    //
     private ExtensionLoader(Class<?> type) {
         this.type = type;
+        // 首次获取加载类时会 先获取扩展点工厂类的扩展点
         objectFactory = (type == ExtensionFactory.class ? null : ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension());
     }
 
@@ -465,11 +467,12 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * 获取扩展点
+     * 获取扩展点  1.获取接口实现类被Adaptive修饰的 如果获取不到则新建扩展点
      * @return
      */
     @SuppressWarnings("unchecked")
     public T getAdaptiveExtension() {
+        // 先从缓存里取 取不到则新建 每个扩展点类型都是单例的
         Object instance = cachedAdaptiveInstance.get();
         if (instance == null) {
             if (createAdaptiveInstanceError == null) {
@@ -478,6 +481,7 @@ public class ExtensionLoader<T> {
                     instance = cachedAdaptiveInstance.get();
                     if (instance == null) {
                         try {
+                            // 创建扩展点实例
                             instance = createAdaptiveExtension();
                             cachedAdaptiveInstance.set(instance);
                         } catch (Throwable t) {
@@ -546,6 +550,12 @@ public class ExtensionLoader<T> {
     }
 
 
+    /**
+     * //通过反射自动调用instance的set方法把自身的属性注入进去，解决的扩展类依赖问题，也就是说解决扩展类依赖扩展类的问题
+     *
+     * @param instance
+     * @return
+     */
     private T injectExtension(T instance) {
         try {
             // 扩展点工程类
@@ -558,11 +568,13 @@ public class ExtensionLoader<T> {
                         // 获取参数类型
                         Class<?> pt = method.getParameterTypes()[0];
                         try {
-                            // 获取属性名称 通过方法截取 以及首字母小写处理
+                            // 获取属性名称 通过方法截取 以及首字母小写处理  获取依赖的扩展点的名称
                             String property = method.getName().length() > 3 ? method.getName().substring(3, 4).toLowerCase() + method.getName().substring(4) : "";
-                            // 利用工厂模式获取到扩展点实例
+                            // 利用工厂模式获取到扩展点实例  从获得属性值
                             Object object = objectFactory.getExtension(pt, property);
                             if (object != null) {
+                                // 如果不为空，说明set方法的参数是扩展点类型，那么进行注入，意思也
+                                // 就是说扩展点里面还有依赖其他扩展点
                                 method.invoke(instance, object);
                             }
                         } catch (Exception e) {
@@ -670,6 +682,13 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * 把URL的配置相关信息读取后用ClassLoader进行加载
+     *
+     * @param extensionClasses
+     * @param classLoader
+     * @param resourceURL
+     */
     private void loadResource(Map<String, Class<?>> extensionClasses, ClassLoader classLoader, java.net.URL resourceURL) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(resourceURL.openStream(), "utf-8"));
@@ -694,6 +713,7 @@ public class ExtensionLoader<T> {
                             }
                             if (line.length() > 0) {
                                 // 加载spi的扩展点实现类 比如failover=org.apache.dubbo.rpc.cluster.support.FailoverCluster
+                                // Class.forName(line, true, classLoader) 加载扩展点类
                                 loadClass(extensionClasses, resourceURL, Class.forName(line, true, classLoader), name);
                             }
                         } catch (Throwable t) {
@@ -713,12 +733,7 @@ public class ExtensionLoader<T> {
     // 加载扩展点实现类
 
     /**
-     *
-     * @param extensionClasses
-     * @param resourceURL
-     * @param clazz
-     * @param name
-     * @throws NoSuchMethodException
+     * 对指定的扩展点实现进行加载并发到extensionClasses的Map里面
      */
     private void loadClass(Map<String, Class<?>> extensionClasses, java.net.URL resourceURL, Class<?> clazz, String name) throws NoSuchMethodException {
         // 判断要扩展的实现类是不是目标接口的类型 不是则抛出异常
@@ -727,15 +742,20 @@ public class ExtensionLoader<T> {
                     type + ", class line: " + clazz.getName() + "), class "
                     + clazz.getName() + "is not subtype of interface.");
         }
+        // 当前扩展点实现类是否有Adaptive注解
         if (clazz.isAnnotationPresent(Adaptive.class)) {
             if (cachedAdaptiveClass == null) {
+                // 将缓存的适配类设置为此类
                 cachedAdaptiveClass = clazz;
-            } else if (!cachedAdaptiveClass.equals(clazz)) {
+            } // 一个接口只能有一个适配器类
+            else if (!cachedAdaptiveClass.equals(clazz)) {
                 throw new IllegalStateException("More than 1 adaptive class found: "
                         + cachedAdaptiveClass.getClass().getName()
                         + ", " + clazz.getClass().getName());
             }
-        } else if (isWrapperClass(clazz)) {
+        } // 没有Adaptive注解 则判断是不是包装类
+        else if (isWrapperClass(clazz)) {
+            // 有指定clazz的拷贝构造函数
             Set<Class<?>> wrappers = cachedWrapperClasses;
             if (wrappers == null) {
                 cachedWrapperClasses = new ConcurrentHashSet<Class<?>>();
@@ -750,6 +770,7 @@ public class ExtensionLoader<T> {
                     throw new IllegalStateException("No such extension name for the class " + clazz.getName() + " in the config " + resourceURL);
                 }
             }
+            // 将文件中的key用逗号进行分割
             String[] names = NAME_SEPARATOR.split(name);
             if (names != null && names.length > 0) {
                 Activate activate = clazz.getAnnotation(Activate.class);
@@ -763,6 +784,7 @@ public class ExtensionLoader<T> {
                     }
                 }
                 for (String n : names) {
+                    //假如说配置了name1,name2=com.alibaba.DemoInterface,这时候在cachedNames中只会存储一个name1
                     if (!cachedNames.containsKey(clazz)) {
                         cachedNames.put(clazz, n);
                     }
@@ -770,6 +792,7 @@ public class ExtensionLoader<T> {
                     if (c == null) {
                         extensionClasses.put(n, clazz);
                     } else if (c != clazz) {
+                        //防止同一个扩展类实现被两个key共同使用
                         throw new IllegalStateException("Duplicate extension " + type.getName() + " name " + n + " on " + c.getName() + " and " + clazz.getName());
                     }
                 }
@@ -777,6 +800,11 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * 判断是否有指定类型的拷贝构造函数
+     * @param clazz
+     * @return
+     */
     private boolean isWrapperClass(Class<?> clazz) {
         try {
             clazz.getConstructor(type);
@@ -786,14 +814,25 @@ public class ExtensionLoader<T> {
         }
     }
 
+    /**
+     * 寻找带有指定注解的类
+     * 如果没有Extension注解 则获取类名称，比如ExtensionLoader
+     * @param clazz
+     * @return
+     */
     @SuppressWarnings("deprecation")
     private String findAnnotationName(Class<?> clazz) {
         org.apache.dubbo.common.Extension extension = clazz.getAnnotation(org.apache.dubbo.common.Extension.class);
         if (extension == null) {
+            // 获取类名称
             String name = clazz.getSimpleName();
+            // 如果类名称是以接口名称为结尾
+            // 比如：fixed=org.apache.dubbo.common.threadpool.support.fixed.FixedThreadPool是ThreadPool的后缀
             if (name.endsWith(type.getSimpleName())) {
+                // 此时截取的就是Fixed
                 name = name.substring(0, name.length() - type.getSimpleName().length());
             }
+            // 变为fixed
             return name.toLowerCase();
         }
         return extension.value();
@@ -808,14 +847,23 @@ public class ExtensionLoader<T> {
         try {
             // 获取getAdaptiveExtensionClass类，并完成注入
             // 1.获取适配器类2.在适配器类里注入其他的扩展点
+
+            // getAdaptiveExtensionClass().newInstance()
             return injectExtension((T) getAdaptiveExtensionClass().newInstance());
         } catch (Exception e) {
             throw new IllegalStateException("Can not create adaptive extension " + type + ", cause: " + e.getMessage(), e);
         }
     }
 
-    //获得适配类有两种途径，第一就是某个实现类上被@Adaptive注解，第二就是没有实现类被注解，
-    // 因此Dubbo会自动生成一个某个接口的适配类
+    //获得适配类有两种途径，第一就是某个实现类上被@Adaptive注解，
+    //第二就是没有实现类被注解， 因此Dubbo会自动生成一个某个接口的适配类
+
+    /**
+     * 获得适配类有两种途径，第一就是某个实现类上被@Adaptive注解，
+     //第二就是没有实现类被注解， 因此Dubbo会自动生成一个某个接口的适配类
+     返回Class<T> 然后通过反射进行实例化
+     * @return
+     */
     private Class<?> getAdaptiveExtensionClass() {
         //如果能找到被@Adaptive注解实现类
         getExtensionClasses();
@@ -827,12 +875,18 @@ public class ExtensionLoader<T> {
     }
 
     private Class<?> createAdaptiveExtensionClass() {
+        //
         String code = createAdaptiveExtensionClassCode();
         ClassLoader classLoader = findClassLoader();
         org.apache.dubbo.common.compiler.Compiler compiler = ExtensionLoader.getExtensionLoader(org.apache.dubbo.common.compiler.Compiler.class).getAdaptiveExtension();
         return compiler.compile(code, classLoader);
     }
 
+    /**
+     * 首先遍历接口的所有方法是否有Adaptive 没有的话没法生成code会抛出异常
+     * 拼出来一个代码实现
+     * @return
+     */
     private String createAdaptiveExtensionClassCode() {
         StringBuilder codeBuilder = new StringBuilder();
         Method[] methods = type.getMethods();

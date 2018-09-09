@@ -1,2 +1,5 @@
+
+
+# 表明了扩展点是哪个类
 adaptive=org.apache.dubbo.common.extension.adaptive.impl.HasAdaptiveExt_ManualAdaptive
 impl1=org.apache.dubbo.common.extension.adaptive.impl.HasAdaptiveExtImpl1

@@ -19,6 +19,9 @@ package org.apache.dubbo.common.extension.adaptive.impl;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.extension.adaptive.HasAdaptiveExt;
 
+/**
+ * 普通的实现类
+ */
 public class HasAdaptiveExtImpl1 implements HasAdaptiveExt {
     public String echo(URL url, String s) {
         return this.getClass().getSimpleName();
