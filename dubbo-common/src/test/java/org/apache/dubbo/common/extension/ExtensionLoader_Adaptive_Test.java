@@ -49,7 +49,7 @@ public class ExtensionLoader_Adaptive_Test {
     @Test
     public void test_useAdaptiveClass() throws Exception {
 
-        ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
+//        ExtensionLoader.getExtensionLoader(Protocol.class).getAdaptiveExtension();
         // 加载扩展类加载器
         ExtensionLoader<HasAdaptiveExt> loader = ExtensionLoader.getExtensionLoader(HasAdaptiveExt.class);
         // 获取适配扩展点
@@ -67,6 +67,7 @@ public class ExtensionLoader_Adaptive_Test {
             URL url = new URL("p1", "1.2.3.4", 1010, "path1", map);
 
             String echo = ext.echo(url, "haha");
+
             assertEquals("Ext1Impl1-echo", echo);
         }
 

@@ -89,17 +89,26 @@ public abstract class AbstractConfig implements Serializable {
         return value;
     }
 
+    /**
+     * 比如传过来的是ProviderConfig
+     *
+     * @param config
+     */
     protected static void appendProperties(AbstractConfig config) {
         if (config == null) {
             return;
         }
+        // 获取前缀 比如dubbo.provider.
         String prefix = "dubbo." + getTagName(config.getClass()) + ".";
+        // 获取类的所有方法
         Method[] methods = config.getClass().getMethods();
         for (Method method : methods) {
             try {
                 String name = method.getName();
+                // 获取set方法的属性名称
                 if (name.length() > 3 && name.startsWith("set") && Modifier.isPublic(method.getModifiers())
                         && method.getParameterTypes().length == 1 && isPrimitive(method.getParameterTypes()[0])) {
+                    // 获取属性名称 比如ProviderConfig的accepts
                     String property = StringUtils.camelToSplitName(name.substring(3, 4).toLowerCase() + name.substring(4), ".");
 
                     String value = null;
@@ -110,6 +119,7 @@ public abstract class AbstractConfig implements Serializable {
                             logger.info("Use System Property " + pn + " to config dubbo");
                         }
                     }
+
                     if (value == null || value.length() == 0) {
                         String pn = prefix + property;
                         value = System.getProperty(pn);
@@ -156,6 +166,7 @@ public abstract class AbstractConfig implements Serializable {
         }
     }
 
+    // 判断是不是以config或者Bean结尾的类名称
     private static String getTagName(Class<?> cls) {
         String tag = cls.getSimpleName();
         for (String suffix : SUFFIXES) {
@@ -280,6 +291,11 @@ public abstract class AbstractConfig implements Serializable {
         }
     }
 
+    /**
+     * 参数是否为基本封装类型
+     * @param type
+     * @return
+     */
     private static boolean isPrimitive(Class<?> type) {
         return type.isPrimitive()
                 || type == String.class

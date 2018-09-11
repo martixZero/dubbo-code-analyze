@@ -174,6 +174,7 @@ public final class Version {
         checkDuplicate(cls, false);
     }
 
+    // 加载DubboNamespaceHandler.class文件
     public static void checkDuplicate(String path, boolean failOnError) {
         try {
             // search in caller's classloader

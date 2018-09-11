@@ -206,6 +206,7 @@ public /**final**/ class URL implements Serializable {
         }
         i = url.indexOf("://");
         if (i >= 0) {
+            // 判断是否有协议设置
             if (i == 0) throw new IllegalStateException("url missing protocol: \"" + url + "\"");
             protocol = url.substring(0, i);
             url = url.substring(i + 3);

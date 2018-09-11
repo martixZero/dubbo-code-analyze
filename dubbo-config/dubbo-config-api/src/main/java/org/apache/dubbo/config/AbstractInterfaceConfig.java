@@ -156,6 +156,19 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         }
     }
 
+    /**
+     * 具体bean转为服务地址
+     * <p>
+     * rest://10.24.103.7:35014/com.weiyan.risk.service.application.antifraud.api.AntiFraudService?accepts=500
+     * &anyhost=true&application=antifraud&dubbo=2.6.0&generic=false&group=antifraud&interface=com.weiyan.risk.
+     * service.application.antifraud.api.AntiFraudService&methods=getRejectCodes,idcardRelatedMobile,
+     * getHousePriceDetail,mobileRelatedIdcard,getAntifraudInfo,checkMulti,checkRiskDetail&owner=zhy
+     * &pid=12121&revision=3.0.1-SNAPSHOT&serialization=hessian2&server=servlet&side=provider&threads=500
+     * &timeout=3000&timestamp=1536134076617&version=1.0.0
+     *
+     * @param provider
+     * @return
+     */
     protected List<URL> loadRegistries(boolean provider) {
         checkRegistry();
         List<URL> registryList = new ArrayList<URL>();
@@ -256,6 +269,11 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         return null;
     }
 
+    /**
+     * 校验接口里面的方法是否存在
+     * @param interfaceClass
+     * @param methods
+     */
     protected void checkInterfaceAndMethods(Class<?> interfaceClass, List<MethodConfig> methods) {
         // interface cannot be null
         if (interfaceClass == null) {

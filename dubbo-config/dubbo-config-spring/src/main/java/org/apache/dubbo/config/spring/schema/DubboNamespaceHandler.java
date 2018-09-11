@@ -30,6 +30,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
 /**
  * DubboNamespaceHandler
+ * 首先进行字节加载重复校验 校验通过则进行beanDefination的解析 加载 注册到spring容器
  *
  * @export
  */
@@ -39,6 +40,7 @@ public class DubboNamespaceHandler extends NamespaceHandlerSupport {
         Version.checkDuplicate(DubboNamespaceHandler.class);
     }
 
+    // 向spring容器里面注册要解析的元素名称和bean定义解析器
     @Override
     public void init() {
         registerBeanDefinitionParser("application", new DubboBeanDefinitionParser(ApplicationConfig.class, true));

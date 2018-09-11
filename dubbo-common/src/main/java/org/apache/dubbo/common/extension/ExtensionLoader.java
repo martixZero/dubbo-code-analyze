@@ -697,7 +697,7 @@ public class ExtensionLoader<T> {
                 while ((line = reader.readLine()) != null) {
                     //处理注释内容
                     // 注释格式为：override=org.apache.dubbo.rpc.cluster.configurator.override.OverrideConfiguratorFactory # asc
-
+                    // adaptive=org.apache.dubbo.common.extension.factory.AdaptiveExtensionFactory
                     final int ci = line.indexOf('#');
                     if (ci >= 0) line = line.substring(0, ci);
                     line = line.trim();
@@ -707,9 +707,9 @@ public class ExtensionLoader<T> {
                             int i = line.indexOf('=');
                             if (i > 0) {
                                 // 获取spi配置文件的中key
-                                name = line.substring(0, i).trim();
+                                name = line.substring(0, i).trim();// adaptive
                                 // 获取SPI配置文件中的value ExtensionLoader是根据key和value进行加载
-                                line = line.substring(i + 1).trim();
+                                line = line.substring(i + 1).trim();//org.apache.dubbo.common.extension.factory.AdaptiveExtensionFactory
                             }
                             if (line.length() > 0) {
                                 // 加载spi的扩展点实现类 比如failover=org.apache.dubbo.rpc.cluster.support.FailoverCluster
@@ -742,7 +742,7 @@ public class ExtensionLoader<T> {
                     type + ", class line: " + clazz.getName() + "), class "
                     + clazz.getName() + "is not subtype of interface.");
         }
-        // 当前扩展点实现类是否有Adaptive注解
+        // 当前扩展点实现类是否有Adaptive注解 AdaptiveExtensionFactory是有这个注解的
         if (clazz.isAnnotationPresent(Adaptive.class)) {
             if (cachedAdaptiveClass == null) {
                 // 将缓存的适配类设置为此类
@@ -762,7 +762,7 @@ public class ExtensionLoader<T> {
                 wrappers = cachedWrapperClasses;
             }
             wrappers.add(clazz);
-        } else {
+        } else {// 比如SpiExtensionFactory 需要
             clazz.getConstructor();
             if (name == null || name.length() == 0) {
                 name = findAnnotationName(clazz);
@@ -772,7 +772,7 @@ public class ExtensionLoader<T> {
             }
             // 将文件中的key用逗号进行分割
             String[] names = NAME_SEPARATOR.split(name);
-            if (names != null && names.length > 0) {
+            if (names != null && names.length > 0) {// 判断类上是否有activate注解 没有的话就会生成字节
                 Activate activate = clazz.getAnnotation(Activate.class);
                 if (activate != null) {
                     cachedActivates.put(names[0], activate);

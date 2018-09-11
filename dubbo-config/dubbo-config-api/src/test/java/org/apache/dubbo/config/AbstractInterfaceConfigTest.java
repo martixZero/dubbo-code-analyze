@@ -119,6 +119,7 @@ public class AbstractInterfaceConfigTest {
 
     @Test
     public void testLoadRegistries() throws Exception {
+        // 系统设置优先级比较高
         System.setProperty("dubbo.registry.address", "addr1");
         InterfaceConfig interfaceConfig = new InterfaceConfig();
         List<URL> urls = interfaceConfig.loadRegistries(true);
