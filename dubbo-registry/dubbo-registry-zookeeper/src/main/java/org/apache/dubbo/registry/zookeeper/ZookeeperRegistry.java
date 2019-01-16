@@ -66,8 +66,10 @@ public class ZookeeperRegistry extends FailbackRegistry {
             group = Constants.PATH_SEPARATOR + group;
         }
         this.root = group;
+        // 添加状态监听事件
         zkClient = zookeeperTransporter.connect(url);
         zkClient.addStateListener(new StateListener() {
+            // 与zk链接状态的处理监听
             @Override
             public void stateChanged(int state) {
                 if (state == RECONNECTED) {
@@ -111,6 +113,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
     @Override
     protected void doRegister(URL url) {
         try {
+            // 客户端进行信息注册  创建是否临时节点 默认是临时节点
             zkClient.create(toUrlPath(url), url.getParameter(Constants.DYNAMIC_KEY, true));
         } catch (Throwable e) {
             throw new RpcException("Failed to register " + url + " to zookeeper " + getUrl() + ", cause: " + e.getMessage(), e);
@@ -126,12 +129,19 @@ public class ZookeeperRegistry extends FailbackRegistry {
         }
     }
 
+    /**
+     * 订阅服务过程
+     *
+     * @param url
+     * @param listener
+     */
     @Override
     protected void doSubscribe(final URL url, final NotifyListener listener) {
         try {
             if (Constants.ANY_VALUE.equals(url.getServiceInterface())) {
                 String root = toRootPath();
                 ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(url);
+                // 初始化一个订阅的url的空的监听器
                 if (listeners == null) {
                     zkListeners.putIfAbsent(url, new ConcurrentHashMap<NotifyListener, ChildListener>());
                     listeners = zkListeners.get(url);
@@ -166,6 +176,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
             } else {
                 List<URL> urls = new ArrayList<URL>();
                 for (String path : toCategoriesPath(url)) {
+                    // 	/dubbo/com.weiyan.risk.user.api.IDepartmentApi/providers
                     ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(url);
                     if (listeners == null) {
                         zkListeners.putIfAbsent(url, new ConcurrentHashMap<NotifyListener, ChildListener>());
@@ -173,9 +184,11 @@ public class ZookeeperRegistry extends FailbackRegistry {
                     }
                     ChildListener zkListener = listeners.get(listener);
                     if (zkListener == null) {
+                        // 子节点发生变化后 调用notify进行通知处理
                         listeners.putIfAbsent(listener, new ChildListener() {
                             @Override
                             public void childChanged(String parentPath, List<String> currentChilds) {
+                                // 初始化要通知的url为 空数组  providers下的节点数据 = currentChilds
                                 ZookeeperRegistry.this.notify(url, listener, toUrlsWithEmpty(url, parentPath, currentChilds));
                             }
                         });
@@ -262,6 +275,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
         for (int i = 0; i < categories.length; i++) {
             paths[i] = toServicePath(url) + Constants.PATH_SEPARATOR + categories[i];
         }
+        // 返回的是	/dubbo/com.weiyan.risk.user.api.IDepartmentApi/providers
         return paths;
     }
 
@@ -273,6 +287,12 @@ public class ZookeeperRegistry extends FailbackRegistry {
         return toCategoryPath(url) + Constants.PATH_SEPARATOR + URL.encode(url.toFullString());
     }
 
+    /**
+     *
+     * @param consumer 指定消费端
+     * @param providers 提供者列表
+     * @return
+     */
     private List<URL> toUrlsWithoutEmpty(URL consumer, List<String> providers) {
         List<URL> urls = new ArrayList<URL>();
         if (providers != null && !providers.isEmpty()) {
@@ -289,6 +309,13 @@ public class ZookeeperRegistry extends FailbackRegistry {
         return urls;
     }
 
+    /**
+     *
+     * @param consumer
+     * @param path
+     * @param providers 提供者列表
+     * @return
+     */
     private List<URL> toUrlsWithEmpty(URL consumer, String path, List<String> providers) {
         List<URL> urls = toUrlsWithoutEmpty(consumer, providers);
         if (urls == null || urls.isEmpty()) {

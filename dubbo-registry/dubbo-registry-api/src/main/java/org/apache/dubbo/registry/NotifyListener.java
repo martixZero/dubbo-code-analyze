@@ -22,6 +22,8 @@ import java.util.List;
 
 /**
  * NotifyListener. (API, Prototype, ThreadSafe)
+ * 节点信息变化触发监听
+ *
  *
  * @see org.apache.dubbo.registry.RegistryService#subscribe(URL, NotifyListener)
  */

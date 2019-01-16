@@ -358,6 +358,13 @@ public class UrlUtils {
         }
     }
 
+    /**
+     * 判断提供者和消费者的组信息 版本号等是否一致 才会匹配为可用的提供者
+     *
+     * @param consumerUrl
+     * @param providerUrl
+     * @return
+     */
     public static boolean isMatch(URL consumerUrl, URL providerUrl) {
         String consumerInterface = consumerUrl.getServiceInterface();
         String providerInterface = providerUrl.getServiceInterface();

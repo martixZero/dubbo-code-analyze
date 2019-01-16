@@ -254,6 +254,13 @@ public abstract class FailbackRegistry extends AbstractRegistry {
         }
     }
 
+    /**
+     * 通知订阅的消费端 进行provider信息刷新
+     *
+     * @param url      当前消费端
+     * @param listener
+     * @param urls
+     */
     @Override
     protected void notify(URL url, NotifyListener listener, List<URL> urls) {
         if (url == null) {

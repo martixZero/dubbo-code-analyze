@@ -590,6 +590,12 @@ public class ExtensionLoader<T> {
         return instance;
     }
 
+    /**
+     * 获取扩展点类
+     *
+     * @param name
+     * @return
+     */
     private Class<?> getExtensionClass(String name) {
         if (type == null)
             throw new IllegalArgumentException("Extension type == null");

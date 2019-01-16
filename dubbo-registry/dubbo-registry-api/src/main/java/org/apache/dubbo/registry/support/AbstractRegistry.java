@@ -62,6 +62,7 @@ public abstract class AbstractRegistry implements Registry {
     // Log output
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     // Local disk cache, where the special key value.registies records the list of registry centers, and the others are the list of notified service providers
+    // 本地服务提供方的缓存数据
     private final Properties properties = new Properties();
     // File cache timing writing
     private final ExecutorService registryCacheExecutor = Executors.newFixedThreadPool(1, new NamedThreadFactory("DubboSaveRegistryCache", true));
@@ -251,6 +252,7 @@ public abstract class AbstractRegistry implements Registry {
                     reference.set(urls);
                 }
             };
+
             subscribe(url, listener); // Subscribe logic guarantees the first notify to return
             List<URL> urls = reference.get();
             if (urls != null && !urls.isEmpty()) {
@@ -390,9 +392,11 @@ public abstract class AbstractRegistry implements Registry {
         for (URL u : urls) {
             if (UrlUtils.isMatch(url, u)) {
                 String category = u.getParameter(Constants.CATEGORY_KEY, Constants.DEFAULT_CATEGORY);
+                // 获取 providers 下列表
                 List<URL> categoryList = result.get(category);
                 if (categoryList == null) {
                     categoryList = new ArrayList<URL>();
+                    // key = providers
                     result.put(category, categoryList);
                 }
                 categoryList.add(u);
@@ -406,15 +410,23 @@ public abstract class AbstractRegistry implements Registry {
             notified.putIfAbsent(url, new ConcurrentHashMap<String, List<URL>>());
             categoryNotified = notified.get(url);
         }
+
         for (Map.Entry<String, List<URL>> entry : result.entrySet()) {
             String category = entry.getKey();
             List<URL> categoryList = entry.getValue();
             categoryNotified.put(category, categoryList);
+            // 刷新最新的providers信息到本地配置文件
             saveProperties(url);
+            //
             listener.notify(categoryList);
         }
     }
 
+    /**
+     * 消费端信息
+     *
+     * @param url 消费端信息
+     */
     private void saveProperties(URL url) {
         if (file == null) {
             return;
@@ -433,11 +445,13 @@ public abstract class AbstractRegistry implements Registry {
                     }
                 }
             }
+            // key为接口名称+组+version
             properties.setProperty(url.getServiceKey(), buf.toString());
             long version = lastCacheChanged.incrementAndGet();
             if (syncSaveFile) {
                 doSaveProperties(version);
             } else {
+                // 刷新本地缓存信息
                 registryCacheExecutor.execute(new SaveProperties(version));
             }
         } catch (Throwable t) {

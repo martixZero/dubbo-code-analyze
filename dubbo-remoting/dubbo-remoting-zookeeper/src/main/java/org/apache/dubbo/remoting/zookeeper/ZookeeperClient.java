@@ -28,6 +28,13 @@ public interface ZookeeperClient {
 
     List<String> getChildren(String path);
 
+    /**
+     * 添加子节点监听器
+     *
+     * @param path
+     * @param listener
+     * @return
+     */
     List<String> addChildListener(String path, ChildListener listener);
 
     void removeChildListener(String path, ChildListener listener);

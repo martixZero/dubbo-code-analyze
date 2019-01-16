@@ -135,6 +135,13 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
 
     protected abstract boolean checkExists(String path);
 
+    /**
+     * 创建某路径下的子节点监听器
+     *
+     * @param path
+     * @param listener
+     * @return
+     */
     protected abstract TargetChildListener createTargetChildListener(String path, ChildListener listener);
 
     protected abstract List<String> addTargetChildListener(String path, TargetChildListener listener);

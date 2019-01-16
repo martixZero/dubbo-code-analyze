@@ -168,7 +168,7 @@ public abstract class AbstractConfig implements Serializable {
 
     // 判断是不是以config或者Bean结尾的类名称
     private static String getTagName(Class<?> cls) {
-        String tag = cls.getSimpleName();
+        String tag = cls.getSimpleName();//ProviderConfig
         for (String suffix : SUFFIXES) {
             if (tag.endsWith(suffix)) {
                 tag = tag.substring(0, tag.length() - suffix.length());
@@ -176,7 +176,7 @@ public abstract class AbstractConfig implements Serializable {
             }
         }
         tag = tag.toLowerCase();
-        return tag;
+        return tag;//provider
     }
 
     protected static void appendParameters(Map<String, String> parameters, Object config) {

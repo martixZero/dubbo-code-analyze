@@ -146,6 +146,17 @@ public /**final**/ class URL implements Serializable {
         this(protocol, username, password, host, port, path, CollectionUtils.toStringMap(pairs));
     }
 
+    /**
+     * bean信息转为URL对象
+     *
+     * @param protocol
+     * @param username
+     * @param password
+     * @param host
+     * @param port
+     * @param path
+     * @param parameters
+     */
     public URL(String protocol, String username, String password, String host, int port, String path, Map<String, String> parameters) {
         if ((username == null || username.length() == 0)
                 && password != null && password.length() > 0) {
