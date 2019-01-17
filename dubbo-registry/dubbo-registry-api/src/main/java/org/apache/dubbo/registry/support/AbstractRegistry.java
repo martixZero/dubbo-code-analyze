@@ -373,6 +373,13 @@ public abstract class AbstractRegistry implements Registry {
         }
     }
 
+    /**
+     * 子节点发生变化后 刷新本地缓存列表
+     *
+     * @param url
+     * @param listener
+     * @param urls
+     */
     protected void notify(URL url, NotifyListener listener, List<URL> urls) {
         if (url == null) {
             throw new IllegalArgumentException("notify url == null");

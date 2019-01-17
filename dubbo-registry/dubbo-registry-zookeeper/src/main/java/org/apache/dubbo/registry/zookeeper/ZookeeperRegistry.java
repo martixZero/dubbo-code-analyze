@@ -176,7 +176,7 @@ public class ZookeeperRegistry extends FailbackRegistry {
             } else {
                 List<URL> urls = new ArrayList<URL>();
                 for (String path : toCategoriesPath(url)) {
-                    // 	/dubbo/com.weiyan.risk.user.api.IDepartmentApi/providers
+                    // path的值 = 	/dubbo/com.weiyan.risk.user.api.IDepartmentApi/providers
                     ConcurrentMap<NotifyListener, ChildListener> listeners = zkListeners.get(url);
                     if (listeners == null) {
                         zkListeners.putIfAbsent(url, new ConcurrentHashMap<NotifyListener, ChildListener>());
@@ -186,15 +186,17 @@ public class ZookeeperRegistry extends FailbackRegistry {
                     if (zkListener == null) {
                         // 子节点发生变化后 调用notify进行通知处理
                         listeners.putIfAbsent(listener, new ChildListener() {
+                            // currentChilds 最新的子节点信息
                             @Override
                             public void childChanged(String parentPath, List<String> currentChilds) {
-                                // 初始化要通知的url为 空数组  providers下的节点数据 = currentChilds
+                                // 初始化要通知的url为 空数组  providers下的节点数据 = currentChilds zk节点发生变化则触发此通知器
                                 ZookeeperRegistry.this.notify(url, listener, toUrlsWithEmpty(url, parentPath, currentChilds));
                             }
                         });
                         zkListener = listeners.get(listener);
                     }
                     zkClient.create(path, false);
+                    // 增加子节点监听
                     List<String> children = zkClient.addChildListener(path, zkListener);
                     if (children != null) {
                         urls.addAll(toUrlsWithEmpty(url, path, children));

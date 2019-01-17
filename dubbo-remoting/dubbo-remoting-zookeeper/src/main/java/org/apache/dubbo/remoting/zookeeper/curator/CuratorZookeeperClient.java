@@ -155,6 +155,9 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
         ((CuratorWatcherImpl) listener).unwatch();
     }
 
+    /**
+     * CuratorWatcherImpl 方式注册节点监听事件
+     */
     private class CuratorWatcherImpl implements CuratorWatcher {
 
         private volatile ChildListener listener;

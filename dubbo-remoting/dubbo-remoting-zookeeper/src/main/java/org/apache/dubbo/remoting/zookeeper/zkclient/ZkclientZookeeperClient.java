@@ -112,6 +112,13 @@ public class ZkclientZookeeperClient extends AbstractZookeeperClient<IZkChildLis
         client.close();
     }
 
+    /**
+     * 针对path下的节点进行监听 zkclient实现
+     *
+     * @param path
+     * @param listener
+     * @return
+     */
     @Override
     public IZkChildListener createTargetChildListener(String path, final ChildListener listener) {
         return new IZkChildListener() {
