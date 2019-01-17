@@ -328,6 +328,7 @@ public class ExtensionLoader<T> {
         if (name == null || name.length() == 0)
             throw new IllegalArgumentException("Extension name == null");
         if ("true".equals(name)) {
+            //
             return getDefaultExtension();
         }
         Holder<Object> holder = cachedInstances.get(name);
@@ -336,6 +337,7 @@ public class ExtensionLoader<T> {
             holder = cachedInstances.get(name);
         }
         Object instance = holder.get();
+        // 双重检查
         if (instance == null) {
             synchronized (holder) {
                 instance = holder.get();
@@ -523,8 +525,15 @@ public class ExtensionLoader<T> {
         return new IllegalStateException(buf.toString());
     }
 
+    /**
+     * 创建组件实例对象 javassist=org.apache.dubbo.common.compiler.support.JavassistCompiler
+     *
+     * @param name = javassist
+     * @return
+     */
     @SuppressWarnings("unchecked")
     private T createExtension(String name) {
+        // 从配置文件中加载所有的拓展类，可得到“配置项名称”到“配置类”的映射关系表
         Class<?> clazz = getExtensionClasses().get(name);
         if (clazz == null) {
             throw findException(name);
@@ -532,13 +541,19 @@ public class ExtensionLoader<T> {
         try {
             T instance = (T) EXTENSION_INSTANCES.get(clazz);
             if (instance == null) {
+                // 通过反射创建实例
                 EXTENSION_INSTANCES.putIfAbsent(clazz, clazz.newInstance());
                 instance = (T) EXTENSION_INSTANCES.get(clazz);
             }
+            // 向实例中注入依赖
             injectExtension(instance);
             Set<Class<?>> wrapperClasses = cachedWrapperClasses;
             if (wrapperClasses != null && !wrapperClasses.isEmpty()) {
+                // 循环创建 Wrapper 实例
                 for (Class<?> wrapperClass : wrapperClasses) {
+                    // 将当前 instance 作为参数传给 Wrapper 的构造方法，并通过反射创建 Wrapper 实例。
+                    // 然后向 Wrapper 实例中注入依赖，最后将 Wrapper 实例再次赋值给 instance 变量
+
                     instance = injectExtension((T) wrapperClass.getConstructor(type).newInstance(instance));
                 }
             }
@@ -611,6 +626,7 @@ public class ExtensionLoader<T> {
     private Map<String, Class<?>> getExtensionClasses() {
         //多次判断是为了防止同一个扩展点被多次加载
         Map<String, Class<?>> classes = cachedClasses.get();
+        // 双重检查
         if (classes == null) {
             synchronized (cachedClasses) {
                 classes = cachedClasses.get();
@@ -627,7 +643,7 @@ public class ExtensionLoader<T> {
 
     // synchronized in getExtensionClasses 带有注解adaptive的接口
     private Map<String, Class<?>> loadExtensionClasses() {
-        //所有的扩展点接口都必须被SPI注释标注
+        //所有的扩展点接口都必须被SPI注释标注 ，这里的 type 变量是在调用 getExtensionLoader 方法时传入的
         final SPI defaultAnnotation = type.getAnnotation(SPI.class);
         if (defaultAnnotation != null) {
             // 获取spi的值 比如cluster默认为failover
@@ -663,6 +679,7 @@ public class ExtensionLoader<T> {
      * @param type 接口全名称path
      */
     private void loadDirectory(Map<String, Class<?>> extensionClasses, String dir, String type) {
+        // fileName = 文件夹路径 + type 全限定名
         String fileName = dir + type;
         try {
             Enumeration<java.net.URL> urls;
@@ -719,7 +736,7 @@ public class ExtensionLoader<T> {
                             }
                             if (line.length() > 0) {
                                 // 加载spi的扩展点实现类 比如failover=org.apache.dubbo.rpc.cluster.support.FailoverCluster
-                                // Class.forName(line, true, classLoader) 加载扩展点类
+                                // Class.forName(line, true, classLoader) 加载扩展点类 并通过 loadClass 方法对类进行缓存
                                 loadClass(extensionClasses, resourceURL, Class.forName(line, true, classLoader), name);
                             }
                         } catch (Throwable t) {
@@ -739,7 +756,7 @@ public class ExtensionLoader<T> {
     // 加载扩展点实现类
 
     /**
-     * 对指定的扩展点实现进行加载并发到extensionClasses的Map里面
+     * 对指定的扩展点实现进行加载并缓存到extensionClasses的Map里面  clazz = org.apache.dubbo.rpc.cluster.support.FailoverCluster name = failover
      */
     private void loadClass(Map<String, Class<?>> extensionClasses, java.net.URL resourceURL, Class<?> clazz, String name) throws NoSuchMethodException {
         // 判断要扩展的实现类是不是目标接口的类型 不是则抛出异常
@@ -748,7 +765,7 @@ public class ExtensionLoader<T> {
                     type + ", class line: " + clazz.getName() + "), class "
                     + clazz.getName() + "is not subtype of interface.");
         }
-        // 当前扩展点实现类是否有Adaptive注解 AdaptiveExtensionFactory是有这个注解的
+        // 当前扩展点实现类是否有Adaptive注解 AdaptiveExtensionFactory是有这个注解的  FailoverCluster 无此注解
         if (clazz.isAnnotationPresent(Adaptive.class)) {
             if (cachedAdaptiveClass == null) {
                 // 将缓存的适配类设置为此类
@@ -767,10 +784,12 @@ public class ExtensionLoader<T> {
                 cachedWrapperClasses = new ConcurrentHashSet<Class<?>>();
                 wrappers = cachedWrapperClasses;
             }
+            // 存储 clazz 到 cachedWrapperClasses 缓存中
             wrappers.add(clazz);
         } else {// 比如SpiExtensionFactory 需要
             clazz.getConstructor();
             if (name == null || name.length() == 0) {
+                // 如果 name 为空，则尝试从 Extension 注解中获取 name，或使用小写的类名作为 name
                 name = findAnnotationName(clazz);
                 if (name.length() == 0) {
                     throw new IllegalStateException("No such extension name for the class " + clazz.getName() + " in the config " + resourceURL);
@@ -781,6 +800,8 @@ public class ExtensionLoader<T> {
             if (names != null && names.length > 0) {// 判断类上是否有activate注解 没有的话就会生成字节
                 Activate activate = clazz.getAnnotation(Activate.class);
                 if (activate != null) {
+                    // 如果类上有 Activate 注解，则使用 names 数组的第一个元素作为键，
+                    // 存储 name 到 Activate 注解对象的映射关系
                     cachedActivates.put(names[0], activate);
                 } else {
                     // support org.apache.dubbo.common.extension.Activate
@@ -792,6 +813,8 @@ public class ExtensionLoader<T> {
                 for (String n : names) {
                     //假如说配置了name1,name2=com.alibaba.DemoInterface,这时候在cachedNames中只会存储一个name1
                     if (!cachedNames.containsKey(clazz)) {
+                        // 存储 Class 到名称的映射关系
+
                         cachedNames.put(clazz, n);
                     }
                     Class<?> c = extensionClasses.get(n);
